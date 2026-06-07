@@ -117,7 +117,7 @@
 
             <controls:SettingsExpander x:Name="AboutPlus"
                                        Header="About Eon +"
-                                       Description="1.0.0"
+                                       Description="1.0.1"
                                        FontWeight="SemiBold">
                 <controls:SettingsExpander.HeaderIcon>
                     <ImageIcon Source="ms-appx:///Content/Texture/Branding/EonPlus.ico"/>

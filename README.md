@@ -12,5 +12,6 @@
 - Fully implemented Themes
 - Easter Egg
 - Custom Eon+ RPC
+- Real-time Playercount
 
 <img width="1180" height="719" alt="image" src="https://github.com/user-attachments/assets/b2667d07-1e05-4eb3-8ed8-172f7d6fd9a9" />

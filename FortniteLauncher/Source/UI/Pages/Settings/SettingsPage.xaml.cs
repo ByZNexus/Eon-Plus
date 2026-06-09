@@ -147,8 +147,42 @@ namespace FortniteLauncher.Pages
 
         public static void ApplyTheme(string Theme)
         {
-            Brush Brush;
+            if (GlobalSettings.Windows is MainWindow MainWinClear && Theme != "Galaxy")
+                MainWinClear.ClearVideoBackground();
+
             var RequestedTheme = Theme == "Light" ? ElementTheme.Light : ElementTheme.Dark;
+
+            if (Theme == "Galaxy")
+            {
+                RequestedTheme = ElementTheme.Dark;
+
+                if (GlobalSettings.Windows?.Content is FrameworkElement GalaxyRoot)
+                    GalaxyRoot.RequestedTheme = RequestedTheme;
+
+                if (GlobalSettings.Windows is MainWindow GalaxyWin)
+                {
+                    if (!GalaxyWin.IsVideoBackgroundActive())
+                    {
+                        string videoPath = System.IO.Path.Combine(
+                            AppContext.BaseDirectory,
+                            "Content", "Texture", "Background", "space_galaxy_star.mp4"
+                        );
+                        GalaxyWin.SetVideoBackground(videoPath);
+                    }
+                }
+
+                if (MainWindow.ShellFrame?.Content is MainShellPage GalaxyShell)
+                {
+                    GalaxyShell.SetBackground(new SolidColorBrush(Colors.Transparent));
+                    GalaxyShell.UpdateIcons(Theme);
+                    if (GalaxyShell.GetRootFrame()?.Content is PlayPage GalaxyPlay)
+                        GalaxyPlay.UpdateIcons(Theme);
+                }
+
+                return;
+            }
+
+            Brush Brush;
 
             if (Theme == "KittyParty" || Theme == "Borris" || Theme == "Billoute" || Theme == "ttt")
             {

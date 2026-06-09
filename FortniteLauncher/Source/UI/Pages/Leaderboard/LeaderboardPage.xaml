@@ -5,22 +5,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.Labs.WinUI"
-    mc:Ignorable="d">
-
-    <Grid>
+    mc:Ignorable="d"
+    Background="Transparent">
+    <Grid Background="Transparent">
         <ProgressRing x:Name="LoadingIndicator" 
                       IsActive="True" 
                       Visibility="Visible"
                       HorizontalAlignment="Center" 
                       VerticalAlignment="Center" />
-
         <WebView2 x:Name="MyWebView" 
-                  Width="1175" 
-                  Height="700" 
-                  VerticalAlignment="Top" 
-                  HorizontalAlignment="Center"
-                  Margin="0" 
-                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                  ScrollViewer.VerticalScrollBarVisibility="Hidden" />
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
+          Margin="0" 
+          ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+          ScrollViewer.VerticalScrollBarVisibility="Hidden" />
     </Grid>
 </Page>

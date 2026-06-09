@@ -41,6 +41,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Content\Texture\Background\space_galaxy_star.mov" />
+		<None Remove="Content\Texture\Background\space_galaxy_star.mp4" />
 		<None Remove="Content\Texture\Branding\EonPlus.ico" />
 		<None Remove="Content\Texture\Icons\IC_Download.png" />
 		<None Remove="Content\Texture\Icons\IC_Download_B.png" />
@@ -116,14 +118,16 @@
 	<ItemGroup>
 		<PRIResource Remove="Source\UI\Pages\MainShells\**" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="Content\Texture\Branding\Eon.ico">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Content\Texture\Branding\EonPlus.ico">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
+		<ItemGroup>
+    <Content Include="Content\Texture\Background\space_galaxy_star.mp4">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Texture\Branding\Eon.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Texture\Branding\EonPlus.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
 		<Content Include="Content\Texture\Icons\IC_Download.png" />
 		<Content Include="Content\Texture\Icons\IC_Download.svg" />
 		<Content Include="Content\Texture\Icons\IC_Download_B.png" />

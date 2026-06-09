@@ -17,6 +17,18 @@ namespace FortniteLauncher.Pages
         {
             MyWebView.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
             await MyWebView.EnsureCoreWebView2Async();
+            MyWebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                "localassets",
+                AppContext.BaseDirectory,
+                CoreWebView2HostResourceAccessKind.Allow
+            );
+
+            // Make WebView2 background transparent for Galaxy theme
+            if (GlobalSettings.Options.Theme == "Galaxy")
+            {
+                MyWebView.DefaultBackgroundColor = Windows.UI.Color.FromArgb(0, 0, 0, 0);
+            }
+
             MyWebView.CoreWebView2.NavigationCompleted += ShowWebView;
             MyWebView.Source = new Uri($"{Definitions.BaseURL}/Leaderboard.html");
         }
@@ -32,6 +44,7 @@ namespace FortniteLauncher.Pages
                 {
                     "Dark" => "#0D1117",
                     "Light" => "#f0f0f0",
+                    "Galaxy" => "transparent",
                     _ => "#202336"
                 };
                 string TextColor = Theme == "Light" ? "#000000" : "#ffffff";
@@ -55,23 +68,35 @@ namespace FortniteLauncher.Pages
 
                 string LoadingStyle = $@"
     .LoadingOverlay {{ 
-        background: rgba({(Theme == "Light" ? "255, 255, 255" : Theme == "Dark" ? "13, 17, 23" : "32, 35, 54")}, 0.95) !important; 
+        background: rgba({(Theme == "Light" ? "255, 255, 255" : Theme == "Dark" ? "13, 17, 23" : Theme == "Galaxy" ? "0, 0, 0" : "32, 35, 54")}, {(Theme == "Galaxy" ? "0.4" : "0.95")}) !important; 
     }}
     .LoadingText, .LoadingSubtext {{ 
         color: {TextColor} !important; 
     }}";
+
+                string videoScript = Theme == "Galaxy" ? $@"
+    const video = document.createElement('video');
+    video.src = 'https://localassets/Content/Texture/Background/space_galaxy_star.mp4';
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1;pointer-events:none;';
+    document.body.appendChild(video);
+" : string.Empty;
 
                 string Script = $@"
     const style = document.createElement('style');
     style.textContent = `
         body, html {{
             background-color: {BgColor} !important;
+            background: {BgColor} !important;
             color: {TextColor} !important;
         }}
         {LoadingStyle}
         {LightModeStyle}
     `;
     document.head.appendChild(style);
+    {videoScript}
 ";
 
                 await MyWebView.CoreWebView2.ExecuteScriptAsync(Script);

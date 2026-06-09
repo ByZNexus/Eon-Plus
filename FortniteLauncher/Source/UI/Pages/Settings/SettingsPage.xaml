@@ -45,6 +45,7 @@
                     <ComboBoxItem Content="Borris"/>
                     <ComboBoxItem Content="Billoute"/>
                     <ComboBoxItem Content="ttt"/>
+                    <ComboBoxItem Content="Galaxy"/>
                 </ComboBox>
             </controls:SettingsCard>
         </StackPanel>

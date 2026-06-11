@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Media;
 using WinUIEx;
 using FortniteLauncher.Pages;
 using Windows.Media.Core;
+using Microsoft.Web.WebView2.Core;
 
 namespace FortniteLauncher
 {
@@ -18,7 +19,7 @@ namespace FortniteLauncher
         public string LauncherName { get; } = $"{ProjectDefinitions.Name} ";
         public static Frame ShellFrame { get; private set; }
 
-        private MediaPlayerElement _videoBackground;
+        private WebView2 _videoBackground;
 
         private static readonly List<VirtualKey> KonamiSequence = new()
         {
@@ -140,26 +141,20 @@ namespace FortniteLauncher
             }
         }
 
-        public void SetVideoBackground(string Uri)
+        public async void SetVideoBackground(string videoPath)
         {
-            DispatcherQueue.TryEnqueue(() =>
+            DispatcherQueue.TryEnqueue(async () =>
             {
                 ClearVideoBackground();
 
-                _videoBackground = new MediaPlayerElement
+                _videoBackground = new WebView2
                 {
-                    Source = MediaSource.CreateFromUri(new Uri("file:///" + Uri.Replace("\\", "/"))),
-                    Stretch = Stretch.UniformToFill,
-                    AutoPlay = true,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch,
                     IsHitTestVisible = false,
                     Width = double.NaN,
                     Height = double.NaN
                 };
-
-                _videoBackground.MediaPlayer.IsMuted = true;
-                _videoBackground.MediaPlayer.IsLoopingEnabled = true;
 
                 if (RootGrid != null)
                 {
@@ -168,8 +163,39 @@ namespace FortniteLauncher
                     Grid.SetRowSpan(_videoBackground, 2);
                     Grid.SetColumnSpan(_videoBackground, 2);
                     RootGrid.Children.Insert(0, _videoBackground);
-                    RootGrid.Background = new SolidColorBrush(Colors.Transparent);
+                    RootGrid.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(1, 0, 0, 0));
                 }
+
+                await _videoBackground.EnsureCoreWebView2Async();
+
+                _videoBackground.DefaultBackgroundColor = Windows.UI.Color.FromArgb(0, 0, 0, 0);
+                _videoBackground.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                    "galaxybg",
+                    System.IO.Path.GetDirectoryName(videoPath),
+                    CoreWebView2HostResourceAccessKind.Allow
+                );
+
+                string html = $@"<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {{ margin:0; padding:0; overflow:hidden; background:#000; }}
+video {{ position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; }}
+</style>
+</head>
+<body>
+<video autoplay loop muted playsinline>
+  <source src=""https://galaxybg/{System.IO.Path.GetFileName(videoPath)}"" type=""video/mp4"">
+</video>
+</body>
+</html>";
+
+                _videoBackground.NavigateToString(html);
+
+                _videoBackground.NavigationCompleted += (s, e) =>
+                {
+                    System.Diagnostics.Debug.WriteLine($"[Galaxy] WebView2 navigation success: {e.IsSuccess}");
+                };
 
                 SetTitleBarColors();
             });
@@ -179,18 +205,21 @@ namespace FortniteLauncher
         {
             if (_videoBackground != null)
             {
-                try { _videoBackground.MediaPlayer?.Pause(); } catch { }
-                try { _videoBackground.Source = null; } catch { }
+                try { _videoBackground.CoreWebView2?.Stop(); } catch { }
 
                 if (RootGrid != null)
                     RootGrid.Children.Remove(_videoBackground);
 
                 _videoBackground = null;
             }
+
+            if (RootGrid != null)
+                RootGrid.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 32, 35, 54));
         }
+
         public bool IsVideoBackgroundActive()
         {
             return _videoBackground != null;
         }
-    }
-}  // THIS WAS MADE BY WTC AND BYZN ANYONE WHO SKIDS OF US! THIS PROJECT IS CALLED EON+
+    }  // THIS WAS MADE BY WTC AND BYZN ANYONE WHO SKIDS OF US! THIS PROJECT IS CALLED EON+
+}

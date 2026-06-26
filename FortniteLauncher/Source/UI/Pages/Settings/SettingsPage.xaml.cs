@@ -37,7 +37,7 @@ namespace FortniteLauncher.Pages
                     .Cast<ComboBoxItem>()
                     .Where(item => {
                         string name = item.Content?.ToString();
-                        return name == "KittyParty" || name == "Borris" || name == "Billoute" || name == "ttt";
+                        return name == "ttt";
                     })
                     .ToList();
 
@@ -50,7 +50,7 @@ namespace FortniteLauncher.Pages
                 }
                 else
                 {
-                    string[] targetNames = { "KittyParty", "Borris", "Billoute", "ttt" };
+                    string[] targetNames = { "ttt" };
                     foreach (var name in targetNames)
                     {
                         bool alreadyExists = ThemeSelector.Items
@@ -192,13 +192,10 @@ namespace FortniteLauncher.Pages
 
             Brush Brush;
 
-            if (Theme == "KittyParty" || Theme == "Borris" || Theme == "Billoute" || Theme == "ttt")
+            if (Theme == "ttt")
             {
                 string imageUrl = Theme switch
                 {
-                    "KittyParty" => "https://media.discordapp.net/attachments/1509928333264031826/1510659568009744525/image.png?ex=6a1d9edb&is=6a1c4d5b&hm=4aebcaa1ee9ff6a9a1e59094e0db12c0434f3d3b95f0f6e784ee0221d1c7ea7d&format=webp&quality=lossless&width=912&height=959&",
-                    "Borris" => "https://media.discordapp.net/attachments/1509928333264031826/1510669092984717332/borris.png?ex=6a1da7ba&is=6a1c563a&hm=6cc87b8ae47eca0251b68a49f46567467f3a0dbc7f148a786ba190dd25d627b1&=&format=webp&quality=lossless&width=912&height=885",
-                    "Billoute" => "https://media.discordapp.net/attachments/1500223387144945835/1510671953214574592/boos.png?ex=6a1daa64&is=6a1c58e4&hm=b528c96085670deff1b4d9472f91a3759e7a61380321ff01737a463a6fbe89ef&=&format=webp&quality=lossless",
                     "ttt" => "https://cdn.7tv.app/emote/01KNNF1BEWZNVCCAWVX96VQ7WB/4x.gif",
                     _ => string.Empty
                 };

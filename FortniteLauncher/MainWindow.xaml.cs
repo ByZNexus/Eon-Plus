@@ -36,6 +36,7 @@ namespace FortniteLauncher
         {
             InitializeComponent();
             ConfigureWindow();
+            ApplyStartupTitleBarColor();
             ConfigureBackdrop();
             InitializeNavigation();
 
@@ -220,6 +221,24 @@ video {{ position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cove
         public bool IsVideoBackgroundActive()
         {
             return _videoBackground != null;
+        }
+
+        private void ApplyStartupTitleBarColor()
+        {
+            var Theme = GlobalSettings.Options?.Theme ?? "Default";
+            var Color = Theme switch
+            {
+                "Dark" => Windows.UI.Color.FromArgb(255, 13, 17, 23),
+                "Light" => Windows.UI.Color.FromArgb(255, 240, 240, 240),
+                "Galaxy" => Windows.UI.Color.FromArgb(255, 13, 17, 30),
+                _ => Windows.UI.Color.FromArgb(255, 32, 35, 54)
+            };
+
+            if (RootGrid != null)
+                RootGrid.Background = new SolidColorBrush(Color);
+
+            if (AppTitleBar != null)
+                AppTitleBar.Background = new SolidColorBrush(Colors.Transparent);
         }
     }  // THIS WAS MADE BY WTC AND BYZN ANYONE WHO SKIDS OF US! THIS PROJECT IS CALLED EON+
 }

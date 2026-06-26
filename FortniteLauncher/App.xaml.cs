@@ -28,6 +28,7 @@ namespace FortniteLauncher
         {
             try
             {
+                UserSettings.LoadSettings();
                 InitializeMainWindow();
                 ConfigureSettings();
             }
@@ -58,11 +59,9 @@ namespace FortniteLauncher
 
         private void ConfigureSettings()
         {
-            UserSettings.LoadSettings();
             if (GlobalSettings.Options.IsSoundEnabled)
             {
                 ElementSoundPlayer.State = ElementSoundPlayerState.On;
-                SettingsPage.ApplyTheme(GlobalSettings.Options.Theme ?? "Default");
             }
         }
     }

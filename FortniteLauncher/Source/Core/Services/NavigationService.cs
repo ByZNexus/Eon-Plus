@@ -14,11 +14,8 @@ class NavigationService
             Page = page;
         }
         public string Label { get; }
-
         public Type Page { get; }
-
         public override string ToString() => Label;
-
         public void NavigateToFromBreadcrumb(int BreadcrumbItemIndex)
         {
             NavigateInternal(Page, BreadcrumbItemIndex);
@@ -29,9 +26,7 @@ class NavigationService
     #region Properties
     public static NavigationView MainNavigation { get; private set; }
     public static BreadcrumbBar MainBreadcrumb { get; private set; }
-
     public static Frame MainFrame { get; private set; }
-
     public static ObservableCollection<Breadcrumb> BreadCrumbs = new ObservableCollection<Breadcrumb>();
     #endregion
 
@@ -49,20 +44,16 @@ class NavigationService
     {
         MainBreadcrumb.ItemsSource = BreadCrumbs;
     }
+
     private static void NavigateInternal(Type page, int BreadcrumbBarIndex)
     {
-        SlideNavigationTransitionInfo info = new SlideNavigationTransitionInfo
-        {
-            Effect = SlideNavigationTransitionEffect.FromLeft
-        };
+        DrillInNavigationTransitionInfo info = new DrillInNavigationTransitionInfo();
         MainFrame.Navigate(page, null, info);
 
         int indexToRemoveAfter = BreadcrumbBarIndex;
-
         if (indexToRemoveAfter < BreadCrumbs.Count - 1)
         {
             int itemsToRemove = BreadCrumbs.Count - indexToRemoveAfter - 1;
-
             for (int i = 0; i < itemsToRemove; i++)
             {
                 BreadCrumbs.RemoveAt(indexToRemoveAfter + 1);
@@ -79,18 +70,12 @@ class NavigationService
             BreadCrumbs.Clear();
             MainFrame.BackStack.Clear();
         }
-
         UpdateBreadcrumb();
         ChangeBreadcrumbVisibility(false);
 
-        SlideNavigationTransitionInfo info = new SlideNavigationTransitionInfo
-        {
-            Effect = SlideNavigationTransitionEffect.FromLeft
-        };
-
+        DrillInNavigationTransitionInfo info = new DrillInNavigationTransitionInfo();
         MainFrame.Navigate(TargetPageType, null, info);
     }
-
 
     public static void ChangeBreadcrumbVisibility(bool IsBreadcrumbVisible)
     {

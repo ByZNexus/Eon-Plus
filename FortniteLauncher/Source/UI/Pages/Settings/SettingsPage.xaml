@@ -41,9 +41,6 @@
                     <ComboBoxItem Content="Default"/>
                     <ComboBoxItem Content="Dark"/>
                     <ComboBoxItem Content="Light"/>
-                    <ComboBoxItem Content="KittyParty"/>
-                    <ComboBoxItem Content="Borris"/>
-                    <ComboBoxItem Content="Billoute"/>
                     <ComboBoxItem Content="ttt"/>
                     <ComboBoxItem Content="Galaxy"/>
                 </ComboBox>

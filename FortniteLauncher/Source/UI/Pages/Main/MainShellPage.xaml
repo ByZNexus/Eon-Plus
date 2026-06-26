@@ -27,8 +27,8 @@
 
             <NavigationView.Resources>
                 <Thickness x:Key="NavigationViewHeaderMargin">56,26,0,0</Thickness>
-                <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="{StaticResource NavigationViewExpandedPaneBackground}"/>
-                <SolidColorBrush x:Key="NavigationViewContentBackground" Color="{StaticResource NavigationViewExpandedPaneBackground}"/>
+                <SolidColorBrush x:Key="NavigationViewContentGridBorderBrush" Color="Transparent"/>
+                <SolidColorBrush x:Key="NavigationViewContentBackground" Color="Transparent"/>
             </NavigationView.Resources>
 
             <NavigationView.Header>

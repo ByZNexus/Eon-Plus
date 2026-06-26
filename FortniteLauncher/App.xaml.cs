@@ -16,7 +16,6 @@ namespace FortniteLauncher
             {
                 InitializeComponent();
                 EnsureSingleInstance();
-
                 Processes.ForceCloseFortnite();
             }
             catch (Exception ex)
@@ -41,13 +40,11 @@ namespace FortniteLauncher
         private void EnsureSingleInstance()
         {
             MutexInstance = new Mutex(true, ProjectDefinitions.Name, out bool CreatedNew);
-
             if (CreatedNew)
             {
                 MutexInstance.ReleaseMutex();
                 return;
             }
-
             MessageBox.Show($"{ProjectDefinitions.Name} Launcher is already running. Please close it before opening a new instance.", "Already Running");
             Environment.Exit(1);
         }
@@ -62,11 +59,9 @@ namespace FortniteLauncher
         private void ConfigureSettings()
         {
             UserSettings.LoadSettings();
-
             if (GlobalSettings.Options.IsSoundEnabled)
             {
                 ElementSoundPlayer.State = ElementSoundPlayerState.On;
-
                 SettingsPage.ApplyTheme(GlobalSettings.Options.Theme ?? "Default");
             }
         }

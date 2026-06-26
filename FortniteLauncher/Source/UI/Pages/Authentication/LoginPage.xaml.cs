@@ -112,7 +112,10 @@ namespace FortniteLauncher.Pages
                 if (Response.Status == "Success")
                 {
                     await Task.Delay(2500);
-                    MainWindow.ShellFrame.Navigate(typeof(MainShellPage));
+                    GlobalSettings.Windows.DispatcherQueue.TryEnqueue(() =>
+                    {
+                        MainWindow.ShellFrame.Navigate(typeof(MainShellPage));
+                    });
                 }
                 return;
             }
@@ -143,7 +146,10 @@ namespace FortniteLauncher.Pages
             if (Response.Status == "Success")
             {
                 await Task.Delay(2000);
-                MainWindow.ShellFrame.Navigate(typeof(MainShellPage));
+                GlobalSettings.Windows.DispatcherQueue.TryEnqueue(() =>
+                {
+                    MainWindow.ShellFrame.Navigate(typeof(MainShellPage));
+                });
             }
         }
 

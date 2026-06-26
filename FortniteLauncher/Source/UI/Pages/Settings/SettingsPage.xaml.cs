@@ -173,8 +173,16 @@ namespace FortniteLauncher.Pages
 
                 if (MainWindow.ShellFrame?.Content is MainShellPage GalaxyShell)
                 {
+                    GalaxyShell.RequestedTheme = RequestedTheme;
                     GalaxyShell.SetBackground(new SolidColorBrush(Colors.Transparent));
                     GalaxyShell.UpdateIcons(Theme);
+
+                    if (GalaxyShell.GetRootFrame() is Frame GalaxyFrame)
+                        GalaxyFrame.RequestedTheme = RequestedTheme;
+
+                    if (GalaxyShell.GetRootFrame()?.Content is FrameworkElement GalaxyPage)
+                        GalaxyPage.RequestedTheme = RequestedTheme;
+
                     if (GalaxyShell.GetRootFrame()?.Content is PlayPage GalaxyPlay)
                         GalaxyPlay.UpdateIcons(Theme);
                 }
@@ -220,18 +228,32 @@ namespace FortniteLauncher.Pages
                 MainWin.SetWindowBackground(Brush);
 
             if (MainWindow.ShellFrame?.Content is MainShellPage Shell)
+            {
+                Shell.RequestedTheme = RequestedTheme;
                 Shell.SetBackground(Brush);
+            }
 
             if (MainWindow.ShellFrame?.Content is MainShellPage ShellPage)
             {
+                ShellPage.RequestedTheme = RequestedTheme;
+                if (ShellPage.GetRootFrame() is Frame Frame)
+                    Frame.RequestedTheme = RequestedTheme;
+
                 ShellPage.SetBackground(Brush);
                 ShellPage.UpdateIcons(Theme);
             }
 
             if (MainWindow.ShellFrame?.Content is MainShellPage ShellPager)
             {
+                ShellPager.RequestedTheme = RequestedTheme;
+                if (ShellPager.GetRootFrame() is Frame Frame)
+                    Frame.RequestedTheme = RequestedTheme;
+
                 ShellPager.SetBackground(Brush);
                 ShellPager.UpdateIcons(Theme);
+
+                if (ShellPager.GetRootFrame()?.Content is FrameworkElement Page)
+                    Page.RequestedTheme = RequestedTheme;
 
                 if (ShellPager.GetRootFrame()?.Content is PlayPage Play)
                     Play.UpdateIcons(Theme);

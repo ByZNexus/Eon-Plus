@@ -17,11 +17,13 @@ namespace FortniteLauncher.Pages
     {
         public static SettingsCard Launch_Button;
         public static ProgressRing ProgressRing;
+        private static readonly HttpClient PlayerCountClient = new HttpClient();
         private string Progress = DownloadService.DownloadProgress;
         private readonly string DisplayUsername = GetRandomGreeting();
         public static readonly string Season = "Launch Fortnite";
         public static readonly string Chapter = string.Empty;
         private List<string> _onlinePlayers = new();
+        private System.Timers.Timer _playerCountTimer;
 
         private static string GetRandomGreeting()
         {
@@ -46,27 +48,33 @@ namespace FortniteLauncher.Pages
             LoadProfileImage();
             Launch_Button = LaunchButton;
             DownloadService.ProgressChanged += OnDownloadProgressChanged;
-            FetchPlayerCount();
-
-            var Timer = new System.Timers.Timer(30000);
-            Timer.Elapsed += (s, e) => FetchPlayerCount();
-            Timer.AutoReset = true;
-            Timer.Start();
         }
 
-        private async void FetchPlayerCount()
+        private void StartPlayerCountUpdates()
+        {
+            if (_playerCountTimer == null)
+            {
+                _playerCountTimer = new System.Timers.Timer(30000);
+                _playerCountTimer.Elapsed += async (s, e) => await FetchPlayerCount();
+                _playerCountTimer.AutoReset = true;
+            }
+
+            _playerCountTimer.Start();
+            _ = FetchPlayerCount();
+        }
+
+        private async Task FetchPlayerCount()
         {
             try
             {
-                var Client = new HttpClient();
-                var Response = await Client.GetStringAsync("https://services.eonfn.net:2087");
+                var Response = await PlayerCountClient.GetStringAsync("https://services.eonfn.net:2087");
                 var Json = JsonDocument.Parse(Response);
                 var AllPlayers = new System.Collections.Generic.List<string>();
 
                 foreach (var Player in Json.RootElement.GetProperty("Clients").GetProperty("clients").EnumerateArray())
                 {
                     var Name = Player.GetString();
-                    if (!Name.StartsWith("user_", StringComparison.OrdinalIgnoreCase))
+                    if (!string.IsNullOrWhiteSpace(Name) && !Name.StartsWith("user_", StringComparison.OrdinalIgnoreCase))
                         AllPlayers.Add(Name);
                 }
 
@@ -87,8 +95,15 @@ namespace FortniteLauncher.Pages
         protected override void OnNavigatedTo(NavigationEventArgs EventArgs)
         {
             base.OnNavigatedTo(EventArgs);
+            StartPlayerCountUpdates();
             AnimateBlur();
             UpdateIcons(GlobalSettings.Options.Theme ?? "Default");
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs EventArgs)
+        {
+            base.OnNavigatedFrom(EventArgs);
+            _playerCountTimer?.Stop();
         }
 
         private void AnimateBlur()
@@ -149,9 +164,17 @@ namespace FortniteLauncher.Pages
 
         private void LoadProfileImage()
         {
-            var URL = GlobalSettings.Options.SkinUrl;
-            if (!string.IsNullOrEmpty(URL))
-                ProfileImageBrush.ImageSource = new BitmapImage(new Uri(URL, UriKind.Absolute));
+            string URL = GlobalSettings.Options.SkinUrl;
+
+            if (!Uri.TryCreate(URL, UriKind.Absolute, out Uri ProfileUri))
+            {
+                Uri.TryCreate($"{Definitions.CDN_URL}/EonS17.png", UriKind.Absolute, out ProfileUri);
+            }
+
+            if (ProfileUri != null)
+            {
+                ProfileImageBrush.ImageSource = new BitmapImage(ProfileUri);
+            }
         }
 
         private void OpenUri(string URI) => Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = URI });

@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI;
 using System;
 
 namespace FortniteLauncher.Pages
@@ -8,27 +9,33 @@ namespace FortniteLauncher.Pages
     public sealed partial class MainShellPage : Page
     {
         public static NavigationView STATIC_MainNavigation;
+        private bool _hasLoadedDefaultPage;
 
         public void SetBackground(Brush Brush)
         {
             MainNavigation.Background = Brush;
+            RootFrame.Background = Brush;
+            MainNavigation.Resources["NavigationViewContentGridBorderBrush"] = new SolidColorBrush(Colors.Transparent);
+            // MainNavigation.Resources["NavigationViewContentBackground"] = Brush;
         }
 
         public MainShellPage()
         {
             this.InitializeComponent();
             NavigationService.InitializeNavigationService(MainNavigation, MainBreadcrumb, RootFrame);
-            MainNavigation.SelectedItem = PlayPageItem;
         }
 
         private void MainNavigation_SelectionChanged(NavigationView Sender, NavigationViewSelectionChangedEventArgs Args)
         {
-            if ((Args.SelectedItem as NavigationViewItem) == PlayPageItem) { NavigationService.Navigate(typeof(PlayPage), true); NavigationService.ChangeBreadcrumbVisibility(false); }
-            if ((Args.SelectedItem as NavigationViewItem) == DownloadsItem) { NavigationService.Navigate(typeof(DownloadsPage), true); }
-            if ((Args.SelectedItem as NavigationViewItem) == ItemShopItem) { NavigationService.Navigate(typeof(ItemShopPage), true); }
-            if ((Args.SelectedItem as NavigationViewItem) == LeaderboardItem) { NavigationService.Navigate(typeof(LeaderboardPage), true); }
-            if ((Args.SelectedItem as NavigationViewItem) == ServerStatusItem) { NavigationService.Navigate(typeof(ServerStatusPage), true); }
-            if ((Args.SelectedItem as NavigationViewItem) == SettingsItem) { NavigationService.Navigate(typeof(SettingsPage), true); }
+            if (Args.SelectedItem is not NavigationViewItem SelectedItem)
+                return;
+
+            if (SelectedItem == PlayPageItem) { NavigationService.Navigate(typeof(PlayPage), true); NavigationService.ChangeBreadcrumbVisibility(false); }
+            else if (SelectedItem == DownloadsItem) { NavigationService.Navigate(typeof(DownloadsPage), true); }
+            else if (SelectedItem == ItemShopItem) { NavigationService.Navigate(typeof(ItemShopPage), true); }
+            else if (SelectedItem == LeaderboardItem) { NavigationService.Navigate(typeof(LeaderboardPage), true); }
+            else if (SelectedItem == ServerStatusItem) { NavigationService.Navigate(typeof(ServerStatusPage), true); }
+            else if (SelectedItem == SettingsItem) { NavigationService.Navigate(typeof(SettingsPage), true); }
             ElementSoundPlayer.Play(ElementSoundKind.Invoke);
         }
 
@@ -45,6 +52,20 @@ namespace FortniteLauncher.Pages
         {
             STATIC_MainNavigation = MainNavigation;
             SettingsPage.ApplyTheme(GlobalSettings.Options.Theme ?? "Default");
+
+            if (_hasLoadedDefaultPage)
+                return;
+
+            _hasLoadedDefaultPage = true;
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                MainNavigation.SelectionChanged -= MainNavigation_SelectionChanged;
+                MainNavigation.SelectedItem = PlayPageItem;
+                MainNavigation.SelectionChanged += MainNavigation_SelectionChanged;
+
+                NavigationService.Navigate(typeof(PlayPage), true);
+                NavigationService.ChangeBreadcrumbVisibility(false);
+            });
         }
 
         public void UpdateIcons(string Theme)
@@ -61,29 +82,13 @@ namespace FortniteLauncher.Pages
 
         private void SetIcon(NavigationViewItem Item, string IconUri)
         {
-            int MenuIndex = MainNavigation.MenuItems.IndexOf(Item);
-            int FooterIndex = MainNavigation.FooterMenuItems.IndexOf(Item);
-
-            var ImageIcon = new ImageIcon
+            Item.Icon = new ImageIcon
             {
                 Width = 24,
                 Height = 24,
                 Margin = new Microsoft.UI.Xaml.Thickness(-4),
                 Source = new Microsoft.UI.Xaml.Media.Imaging.BitmapImage(new Uri(IconUri))
             };
-
-            if (MenuIndex >= 0)
-            {
-                MainNavigation.MenuItems.RemoveAt(MenuIndex);
-                Item.Icon = ImageIcon;
-                MainNavigation.MenuItems.Insert(MenuIndex, Item);
-            }
-            else if (FooterIndex >= 0)
-            {
-                MainNavigation.FooterMenuItems.RemoveAt(FooterIndex);
-                Item.Icon = ImageIcon;
-                MainNavigation.FooterMenuItems.Insert(FooterIndex, Item);
-            }
         }
         public Frame GetRootFrame() => RootFrame;
     }

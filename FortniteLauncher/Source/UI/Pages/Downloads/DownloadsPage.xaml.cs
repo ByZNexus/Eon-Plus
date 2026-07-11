@@ -6,47 +6,83 @@ using System.IO;
 using System.Linq;
 using Microsoft.Windows.Storage.Pickers;
 
-
 namespace FortniteLauncher.Pages
 {
     public sealed partial class DownloadsPage : Page
     {
         private string CurrentPath;
         private string BuildPath;
-        private string DownloadTitle = $"Downloading {ProjectDefinitions.Build} Build";
-        private string Season = $"{ProjectDefinitions.Name} Build ({ProjectDefinitions.Build}-CL-{ProjectDefinitions.ContentLevel})";
-        private string Install = $"Install {ProjectDefinitions.Name}";
-        private string InstallBody = $"Download the {ProjectDefinitions.Build} Fortnite Build, essential for playing {ProjectDefinitions.Name}.";
-        private string UninstallHeader = $"Uninstall {ProjectDefinitions.Name}";
-        private string UninstallBody = $"Delete Chapter {ProjectDefinitions.Chapter} Season {ProjectDefinitions.Season} from your computer. This will not uninstall the {ProjectDefinitions.Name} Launcher.";
 
         public DownloadsPage()
         {
             this.InitializeComponent();
             InitializeBuildPath();
+
+            Loaded += DownloadsPage_Loaded;
+            Unloaded += DownloadsPage_Unloaded;
+        }
+
+        private void DownloadsPage_Loaded(object Sender, RoutedEventArgs EventArgs)
+        {
+            Localization.LanguageChanged += ApplyLocalization;
+            ApplyLocalization();
+        }
+
+        private void DownloadsPage_Unloaded(object Sender, RoutedEventArgs EventArgs)
+        {
+            Localization.LanguageChanged -= ApplyLocalization;
+        }
+
+        private void ApplyLocalization()
+        {
+            InstallDirHeaderText.Text = Localization.Get("InstallDirHeader");
+            SelectPathButton.Content = Localization.Get("SelectPathButton");
+
+            InitializeBuildPath();
+
+            BuildHeaderText.Text = string.Format(Localization.Get("BuildHeaderFormat"), ProjectDefinitions.Name, ProjectDefinitions.Build, ProjectDefinitions.ContentLevel);
+
+            DownloadInProgressInfoBar.Title = string.Format(Localization.Get("DownloadTitleFormat"), ProjectDefinitions.Build);
+            DownloadInProgressInfoBar.Message = Localization.Get("DownloadInProgressMessage");
+
+            InstallHeaderText.Text = string.Format(Localization.Get("InstallHeaderFormat"), ProjectDefinitions.Name);
+            InstallBodyText.Text = string.Format(Localization.Get("InstallBodyFormat"), ProjectDefinitions.Build, ProjectDefinitions.Name);
+            DownloadBuildButton.Content = Localization.Get("DownloadButton");
+
+            UninstallSectionHeaderText.Text = Localization.Get("UninstallSectionHeader");
+            UninstallHeaderText.Text = string.Format(Localization.Get("UninstallHeaderFormat"), ProjectDefinitions.Name);
+            UninstallBodyText.Text = string.Format(Localization.Get("UninstallBodyFormat"), ProjectDefinitions.Chapter, ProjectDefinitions.Season, ProjectDefinitions.Name);
+            Delete.Content = Localization.Get("UninstallButton");
         }
 
         private void InitializeBuildPath()
         {
             if (GlobalSettings.Options.FortnitePath == null || !PathHelper.IsPathValid(GlobalSettings.Options.FortnitePath))
             {
-                CurrentPath = "Game Path";
-                BuildPath = "Path must contain \"FortniteGame\" and \"Engine\" folders!";
-                return;
+                CurrentPath = Localization.Get("GamePathPlaceholder");
+                BuildPath = Localization.Get("BuildPathInvalid");
+            }
+            else
+            {
+                CurrentPath = GlobalSettings.Options.FortnitePath;
+                BuildPath = string.Format(Localization.Get("BuildPathValidFormat"), ProjectDefinitions.Chapter, ProjectDefinitions.Season);
             }
 
-            CurrentPath = GlobalSettings.Options.FortnitePath;
-            BuildPath = $"This is the current build path for Fortnite Chapter {ProjectDefinitions.Chapter} Season {ProjectDefinitions.Season}.";
+            CurrentPathText.Text = CurrentPath;
+            BuildPathText.Text = BuildPath;
         }
 
         private async void DeleteBuild(object Sender, RoutedEventArgs EventArgs)
         {
-            string ConfirmationMessage = $"Are you sure you want to remove Fortnite Version {ProjectDefinitions.Build} from your computer? This action cannot be undone.";
-            bool Confirmed = await DialogService.YesOrNoDialog(ConfirmationMessage, $"Deleting {ProjectDefinitions.Name}");
+            string ConfirmationMessage = string.Format(Localization.Get("DeleteConfirmFormat"), ProjectDefinitions.Build);
+            string ConfirmationTitle = string.Format(Localization.Get("DeleteConfirmTitleFormat"), ProjectDefinitions.Name);
+            bool Confirmed = await DialogService.YesOrNoDialog(ConfirmationMessage, ConfirmationTitle);
 
             if (!Confirmed)
             {
-                DialogService.ShowSimpleDialog($"Your request to remove Fortnite Version {ProjectDefinitions.Build} has been canceled. No changes were made.", "Cancellation Confirmed");
+                DialogService.ShowSimpleDialog(
+                    string.Format(Localization.Get("DeleteCancelledFormat"), ProjectDefinitions.Build),
+                    Localization.Get("DeleteCancelledTitle"));
                 return;
             }
 
@@ -54,16 +90,20 @@ namespace FortniteLauncher.Pages
             {
                 if (!Directory.Exists(GlobalSettings.Options.FortnitePath))
                 {
-                    DialogService.ShowSimpleDialog("Could not find the Fortnite Version at the specified location.", "Not Found");
+                    DialogService.ShowSimpleDialog(Localization.Get("NotFoundMsg"), Localization.Get("NotFoundTitle"));
                     return;
                 }
 
                 Directory.Delete(GlobalSettings.Options.FortnitePath, true);
-                DialogService.ShowSimpleDialog($"{ProjectDefinitions.Name} has been successfully removed from your computer.", "Removal Confirmation");
+                DialogService.ShowSimpleDialog(
+                    string.Format(Localization.Get("RemovalSuccessFormat"), ProjectDefinitions.Name),
+                    Localization.Get("RemovalSuccessTitle"));
             }
             catch (Exception Exception)
             {
-                DialogService.ShowSimpleDialog($"An error occurred: {Exception.Message}", "Error");
+                DialogService.ShowSimpleDialog(
+                    string.Format(Localization.Get("GenericErrorFormat"), Exception.Message),
+                    Localization.Get("GenericErrorTitle"));
             }
         }
 
@@ -77,7 +117,7 @@ namespace FortniteLauncher.Pages
             try
             {
                 var Picker = new FolderPicker(Button.XamlRoot.ContentIslandEnvironment.AppWindowId);
-                Picker.CommitButtonText = "Select Folder";
+                Picker.CommitButtonText = Localization.Get("SelectFolderCommitButton");
                 Picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
                 Picker.ViewMode = PickerViewMode.Thumbnail;
                 Picker.FileTypeFilter.Add("*");
@@ -86,7 +126,7 @@ namespace FortniteLauncher.Pages
 
                 if (SelectedFolder == null)
                 {
-                    DialogService.ShowSimpleDialog("No folder was selected. Please select a valid installation folder.", "No Folder Selected");
+                    DialogService.ShowSimpleDialog(Localization.Get("NoFolderSelectedMsg"), Localization.Get("NoFolderSelectedTitle"));
                     return;
                 }
 
@@ -95,7 +135,7 @@ namespace FortniteLauncher.Pages
 
                 if (CompressedExtensions.Any(Extension => FolderPath.EndsWith(Extension, StringComparison.OrdinalIgnoreCase)))
                 {
-                    DialogService.ShowSimpleDialog("The selected file appears to be compressed. Please extract it using a third party extraction tool.", "Compressed File Error");
+                    DialogService.ShowSimpleDialog(Localization.Get("CompressedFileMsg"), Localization.Get("CompressedFileTitle"));
                     return;
                 }
 
@@ -104,7 +144,7 @@ namespace FortniteLauncher.Pages
                     string ValidPath = PathHelper.FindValidInstallationPath(FolderPath);
                     if (string.IsNullOrEmpty(ValidPath))
                     {
-                        DialogService.ShowSimpleDialog("The specified path must include both the 'FortniteGame' and 'Engine' folders.", "Invalid Installation Path");
+                        DialogService.ShowSimpleDialog(Localization.Get("InvalidPathMsg"), Localization.Get("InvalidPathTitle"));
                         return;
                     }
                     FolderPath = ValidPath;
@@ -117,7 +157,9 @@ namespace FortniteLauncher.Pages
             }
             catch (Exception Exception)
             {
-                DialogService.ShowSimpleDialog($"An error occurred: {Exception.Message}", "Error");
+                DialogService.ShowSimpleDialog(
+                    string.Format(Localization.Get("GenericErrorFormat"), Exception.Message),
+                    Localization.Get("GenericErrorTitle"));
             }
             finally
             {
@@ -137,7 +179,9 @@ namespace FortniteLauncher.Pages
             }
             catch (Exception Exception)
             {
-                DialogService.ShowSimpleDialog($"Failed to open download URL: {Exception.Message}", "Error");
+                DialogService.ShowSimpleDialog(
+                    string.Format(Localization.Get("DownloadUrlErrorFormat"), Exception.Message),
+                    Localization.Get("GenericErrorTitle"));
             }
         }
     }

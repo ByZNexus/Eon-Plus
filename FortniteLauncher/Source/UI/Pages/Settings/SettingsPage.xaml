@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" x:Name="AppearanceSettingsPanel" Spacing="3">
-            <TextBlock Text="Appearance and Behavior" 
+            <TextBlock x:Name="AppearanceHeaderText" Text="Appearance and Behavior" 
                        Style="{ThemeResource CaptionTextBlockStyle}" 
                        FontWeight="SemiBold"/>
 
@@ -31,18 +31,41 @@
                                    Header="Sound Effects"
                                    Description="Hear sound effects while navigating the launcher menus."
                                    FontWeight="SemiBold">
-                <ToggleSwitch x:Name="SoundToggle" Toggled="ToggleSoundSwitch"/>
+                <ToggleSwitch x:Name="SoundToggle" Toggled="ToggleSoundSwitch" OnContent="" OffContent=""/>
             </controls:SettingsCard>
 
-            <controls:SettingsCard Header="Theme"
+            <controls:SettingsCard x:Name="ThemeSettingsCard"
+                                   Header="Theme"
                                    Description="Switch between available themes."
                                    FontWeight="SemiBold">
                 <ComboBox x:Name="ThemeSelector" SelectionChanged="ThemeChanged">
                     <ComboBoxItem Content="Default"/>
                     <ComboBoxItem Content="Dark"/>
                     <ComboBoxItem Content="Light"/>
+                    <ComboBoxItem Content="KittyParty"/>
+                    <ComboBoxItem Content="Borris"/>
+                    <ComboBoxItem Content="Billoute"/>
                     <ComboBoxItem Content="ttt"/>
                     <ComboBoxItem Content="Galaxy"/>
+                </ComboBox>
+            </controls:SettingsCard>
+
+            <controls:SettingsCard x:Name="LanguageCard"
+                                   Header="Language"
+                                   Description="Choose the language used throughout the launcher."
+                                   FontWeight="SemiBold">
+                <ComboBox x:Name="LanguageSelector" SelectionChanged="LanguageChanged">
+                    <ComboBoxItem Content="English" Tag="en-US"/>
+                    <ComboBoxItem Content="Français" Tag="fr-FR"/>
+                    <ComboBoxItem Content="Español" Tag="es-ES"/>
+                    <ComboBoxItem Content="Deutsch" Tag="de-DE"/>
+                    <ComboBoxItem Content="Nederlands" Tag="nl-NL"/>
+                    <ComboBoxItem Content="Русский" Tag="ru-RU"/>
+                    <ComboBoxItem Content="Polski" Tag="pl-PL"/>
+                    <ComboBoxItem Content="Português" Tag="pt-PT"/>
+                    <ComboBoxItem Content="Ελληνικά" Tag="el-GR"/>
+                    <ComboBoxItem Content="中文" Tag="zh-CN"/>
+                    <ComboBoxItem Content="日本語" Tag="ja-JP"/>
                 </ComboBox>
             </controls:SettingsCard>
         </StackPanel>
@@ -52,7 +75,7 @@
                                    Header="Bubble Builds" 
                                    Description="Enable Bubble Wrap Builds as your building style in-game."
                                    FontWeight="SemiBold">
-                <ToggleSwitch x:Name="BubbleBuildsToggle" Toggled="ToggleBubbleBuilds"/>
+                <ToggleSwitch x:Name="BubbleBuildsToggle" Toggled="ToggleBubbleBuilds" OnContent="" OffContent=""/>
             </controls:SettingsCard>
         </StackPanel>
 
@@ -68,13 +91,13 @@
         </Grid>
 
         <StackPanel Grid.Row="5" x:Name="AboutRegion" Spacing="3" Margin="0,15,0,0">
-            <TextBlock Text="About" 
+            <TextBlock x:Name="AboutHeaderText" Text="About" 
                        Style="{ThemeResource CaptionTextBlockStyle}" 
                        FontWeight="SemiBold"/>
             <controls:SettingsExpander x:Name="About"
-                                       Header="About Eon Launcher"
-                                       Description="{x:Bind LauncherVersion}"
-                                       FontWeight="SemiBold">
+                           Header="About Eon Launcher"
+                           Description="{x:Bind LauncherVersion}"
+                           FontWeight="SemiBold">
                 <controls:SettingsExpander.HeaderIcon>
                     <ImageIcon Source="ms-appx:///Content/Texture/Branding/Eon.ico"/>
                 </controls:SettingsExpander.HeaderIcon>
@@ -83,15 +106,15 @@
                     <controls:SettingsCard FontWeight="SemiBold">
                         <controls:SettingsCard.Header>
                             <TextBlock Margin="-35,0,0,0" FontWeight="SemiBold">
-                                <Run Text="Launcher made by"/>
-                                <Hyperlink NavigateUri="{x:Bind GitHub_Juri}">
-                                    <Run Text="Jurij15"/>
-                                </Hyperlink>
-                                <Run Text="and"/>
-                                <Hyperlink NavigateUri="{x:Bind Github_Greenwood}">
-                                    <Run Text="Greenwood"/>
-                                </Hyperlink>
-                                <Run Text="."/>
+                    <Run x:Name="MadeByRun1" Text="Launcher made by"/>
+                    <Hyperlink NavigateUri="{x:Bind GitHub_Juri}">
+                        <Run Text="Jurij15"/>
+                    </Hyperlink>
+                    <Run x:Name="AndRun1" Text="and"/>
+                    <Hyperlink NavigateUri="{x:Bind Github_Greenwood}">
+                        <Run Text="Greenwood"/>
+                    </Hyperlink>
+                    <Run Text="."/>
                             </TextBlock>
                         </controls:SettingsCard.Header>
                     </controls:SettingsCard>
@@ -102,11 +125,11 @@
                         <controls:SettingsCard.Header>
                             <StackPanel Orientation="Horizontal">
                                 <HyperlinkButton NavigateUri="{x:Bind Discord}" 
-                                                 Content="Discord"
-                                                 FontWeight="SemiBold"/>
+                                     Content="Discord"
+                                     FontWeight="SemiBold"/>
                                 <HyperlinkButton NavigateUri="{x:Bind Tiktok}" 
-                                                 Content="TikTok"
-                                                 FontWeight="SemiBold"/>
+                                     Content="TikTok"
+                                     FontWeight="SemiBold"/>
                             </StackPanel>
                         </controls:SettingsCard.Header>
                     </controls:SettingsCard>
@@ -114,9 +137,9 @@
             </controls:SettingsExpander>
 
             <controls:SettingsExpander x:Name="AboutPlus"
-                                       Header="About Eon +"
-                                       Description="1.0.3"
-                                       FontWeight="SemiBold">
+                           Header="About Eon +"
+                           Description="1.1.0"
+                           FontWeight="SemiBold">
                 <controls:SettingsExpander.HeaderIcon>
                     <ImageIcon Source="ms-appx:///Content/Texture/Branding/EonPlus.ico"/>
                 </controls:SettingsExpander.HeaderIcon>
@@ -124,15 +147,11 @@
                     <controls:SettingsCard FontWeight="SemiBold">
                         <controls:SettingsCard.Header>
                             <TextBlock FontWeight="SemiBold" Margin="-35,0,0,0">
-                                <Run Text="Mod made by"/>
-                                <Hyperlink NavigateUri="https://github.com/wtcdevv">
-                                    <Run Text="wtc"/>
-                                </Hyperlink>
-                                <Run Text="and"/>
-                                <Hyperlink NavigateUri="https://github.com/ByZNexus">
-                                    <Run Text="ByZNs"/>
-                                </Hyperlink>
-                                <Run Text="for Eon Launcher."/>
+                    <Run x:Name="ModByRun" Text="Mod made by"/>
+                    <Hyperlink NavigateUri="https://github.com/ByZNexus">
+                        <Run Text="ByZNs"/>
+                    </Hyperlink>
+                    <Run x:Name="ForEonRun" Text="for Eon Launcher."/>
                             </TextBlock>
                         </controls:SettingsCard.Header>
                     </controls:SettingsCard>

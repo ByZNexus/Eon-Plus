@@ -18,6 +18,65 @@ namespace FortniteLauncher.Pages
             this.InitializeComponent();
         }
 
+        private static string JsString(string value) => JsonSerializer.Serialize(value);
+
+        private string BuildTranslationsScript()
+        {
+            var Translations = new
+            {
+                emailLabel = Localization.Get("LoginEmailLabel"),
+                emailPlaceholder = Localization.Get("LoginEmailPlaceholder"),
+                passwordLabel = Localization.Get("LoginPasswordLabel"),
+                passwordPlaceholder = Localization.Get("LoginPasswordPlaceholder"),
+                forgotPassword = Localization.Get("LoginForgotPassword"),
+                signInButton = Localization.Get("LoginSignInButton"),
+                noAccount = Localization.Get("LoginNoAccount"),
+                signUpLink = Localization.Get("LoginSignUpLink"),
+                subtitle = Localization.Get("LoginSubtitle"),
+                bannedTitle = Localization.Get("LoginBannedTitle"),
+                bannedMessage = Localization.Get("LoginBannedMessage"),
+                contactSupport = Localization.Get("LoginContactSupport"),
+                donatorTitle = Localization.Get("LoginDonatorTitle"),
+                donatorMessage = Localization.Get("LoginDonatorMessage"),
+                becomeDonator = Localization.Get("LoginBecomeDonator"),
+                updateTitle = Localization.Get("LoginUpdateTitle"),
+                updateMessage = Localization.Get("LoginUpdateMessage"),
+                downloadLatest = Localization.Get("LoginDownloadLatest"),
+                missingFieldsTitle = Localization.Get("LoginMissingFieldsTitle"),
+                missingFieldsMessage = Localization.Get("LoginMissingFieldsMessage"),
+                invalidEmailTitle = Localization.Get("LoginInvalidEmailTitle"),
+                invalidEmailMessage = Localization.Get("LoginInvalidEmailMessage"),
+                connectionErrorTitle = Localization.Get("LoginConnectionErrorTitle"),
+                connectionErrorMessage = Localization.Get("LoginConnectionErrorMessage"),
+                loginFailedTitle = Localization.Get("LoginFailedTitle"),
+                msgDeny = Localization.Get("LoginMsgDeny"),
+                msgInvalid = Localization.Get("LoginMsgInvalid"),
+                msgError = Localization.Get("LoginMsgError"),
+                msgDefault = Localization.Get("LoginMsgDefault"),
+                loadingMessages = new object[]
+                {
+                    new { text = Localization.Get("LoadingMsg1Text"), subtext = Localization.Get("LoadingMsg1Sub") },
+                    new { text = Localization.Get("LoadingMsg2Text"), subtext = Localization.Get("LoadingMsg2Sub") },
+                    new { text = Localization.Get("LoadingMsg3Text"), subtext = Localization.Get("LoadingMsg3Sub") },
+                    new { text = Localization.Get("LoadingMsg4Text"), subtext = Localization.Get("LoadingMsg4Sub") },
+                    new { text = Localization.Get("LoadingMsg5Text"), subtext = Localization.Get("LoadingMsg5Sub") },
+                    new { text = Localization.Get("LoadingMsg6Text"), subtext = Localization.Get("LoadingMsg6Sub") },
+                },
+                welcomeMessages = new object[]
+                {
+                    new { greeting = Localization.Get("WelcomeMsg1Greeting"), subtext = Localization.Get("WelcomeMsg1Sub") },
+                    new { greeting = Localization.Get("WelcomeMsg2Greeting"), subtext = Localization.Get("WelcomeMsg2Sub") },
+                    new { greeting = Localization.Get("WelcomeMsg3Greeting"), subtext = Localization.Get("WelcomeMsg3Sub") },
+                    new { greeting = Localization.Get("WelcomeMsg4Greeting"), subtext = Localization.Get("WelcomeMsg4Sub") },
+                    new { greeting = Localization.Get("WelcomeMsg5Greeting"), subtext = Localization.Get("WelcomeMsg5Sub") },
+                    new { greeting = Localization.Get("WelcomeMsg6Greeting"), subtext = Localization.Get("WelcomeMsg6Sub") },
+                }
+            };
+
+            string Json = JsonSerializer.Serialize(Translations);
+            return $"<script>window.__loginTranslations = {Json};</script>";
+        }
+
         private async void PageLoaded(object Sender, RoutedEventArgs EventArgs)
         {
             try
@@ -57,7 +116,7 @@ namespace FortniteLauncher.Pages
 
                 string CombinedHtml = HtmlContent
                     .Replace("<link rel=\"stylesheet\" href=\"LoginPage.css\">", $"<style>{CssContent}</style>")
-                    .Replace("<script src=\"LoginPage.js\"></script>", $"<script>{JsContent}</script>");
+                    .Replace("<script src=\"LoginPage.js\"></script>", $"{BuildTranslationsScript()}<script>{JsContent}</script>");
 
                 var Theme = GlobalSettings.Options.Theme;
                 var BgColor = Theme switch
@@ -206,7 +265,7 @@ namespace FortniteLauncher.Pages
             {
                 "Dark" => "#0D1117",
                 "Light" => "#f0f0f0",
-                "Galaxy" => "#0D111E", 
+                "Galaxy" => "#0D111E",
                 _ => "#202336"
             };
             string TextColor = Theme == "Light" ? "#000000" : "#ffffff";

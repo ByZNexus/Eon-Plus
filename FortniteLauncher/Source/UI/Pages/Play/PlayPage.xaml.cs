@@ -19,7 +19,7 @@ namespace FortniteLauncher.Pages
         public static ProgressRing ProgressRing;
         private static readonly HttpClient PlayerCountClient = new HttpClient();
         private string Progress = DownloadService.DownloadProgress;
-        private readonly string DisplayUsername = GetRandomGreeting();
+        private string DisplayUsername = GetRandomGreeting();
         public static readonly string Season = "Launch Fortnite";
         public static readonly string Chapter = string.Empty;
         private List<string> _onlinePlayers = new();
@@ -28,18 +28,14 @@ namespace FortniteLauncher.Pages
         private static string GetRandomGreeting()
         {
             string Username = GlobalSettings.Options.Username;
-            string[] Greetings = new[]
+            string[] GreetingKeys = new[]
             {
-                $"Hello, {Username}!",
-                $"Welcome, {Username}!",
-                $"Hey, {Username}!",
-                $"What's up, {Username}!",
-                $"Greetings, {Username}!",
-                $"Hi, {Username}!",
-                $"Howdy, {Username}!"
+                "GreetingHello", "GreetingWelcome", "GreetingHey",
+                "GreetingWhatsUp", "GreetingGreetings", "GreetingHi", "GreetingHowdy"
             };
             var Random = new Random();
-            return Greetings[Random.Next(Greetings.Length)];
+            string Key = GreetingKeys[Random.Next(GreetingKeys.Length)];
+            return string.Format(Localization.Get(Key), Username);
         }
 
         public PlayPage()
@@ -48,6 +44,46 @@ namespace FortniteLauncher.Pages
             LoadProfileImage();
             Launch_Button = LaunchButton;
             DownloadService.ProgressChanged += OnDownloadProgressChanged;
+
+            Loaded += PlayPage_Loaded;
+            Unloaded += PlayPage_Unloaded;
+        }
+
+        private void PlayPage_Loaded(object Sender, RoutedEventArgs EventArgs)
+        {
+            Localization.LanguageChanged += OnLanguageChanged;
+            ApplyLocalization();
+        }
+
+        private void PlayPage_Unloaded(object Sender, RoutedEventArgs EventArgs)
+        {
+            Localization.LanguageChanged -= OnLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            DisplayUsername = GetRandomGreeting();
+            GreetingText.Text = DisplayUsername;
+            DescriptionPre.Text = Localization.Get("PlayersOnlinePre");
+            OnlineOnEonText.Text = Localization.Get("PlayersOnlinePost");
+            DonationsCard.Header = Localization.Get("DonationsHeader");
+            DonationsCard.Description = Localization.Get("DonationsDescription");
+            DonationsButton.Content = Localization.Get("DonateButton");
+            TiktokCard.Header = Localization.Get("TiktokHeader");
+            TiktokCard.Description = Localization.Get("TiktokDescription");
+            TiktokButton.Content = Localization.Get("ViewButton");
+            LaunchButton.Header = Localization.Get("LaunchFortnite");
+            LaunchButton.Description = Chapter;
+
+            if (_onlinePlayers != null)
+            {
+                PlayerCountButton.Content = string.Format(Localization.Get("PlayersCountFormat"), _onlinePlayers.Count);
+            }
+        }
+
+        private void OnLanguageChanged()
+        {
+            ApplyLocalization();
         }
 
         private void StartPlayerCountUpdates()
@@ -79,17 +115,17 @@ namespace FortniteLauncher.Pages
                 }
 
                 _onlinePlayers = AllPlayers;
-                DispatcherQueue.TryEnqueue(() => PlayerCountButton.Content = $"{_onlinePlayers.Count} players");
+                DispatcherQueue.TryEnqueue(() => PlayerCountButton.Content = string.Format(Localization.Get("PlayersCountFormat"), _onlinePlayers.Count));
             }
             catch
             {
-                DispatcherQueue.TryEnqueue(() => PlayerCountButton.Content = "? players");
+                DispatcherQueue.TryEnqueue(() => PlayerCountButton.Content = Localization.Get("PlayersCountUnknown"));
             }
         }
 
         private void ShowPlayerList(object Sender, RoutedEventArgs EventArgs)
         {
-            DialogService.ShowPlayerListDialog(_onlinePlayers, "Players Online");
+            DialogService.ShowPlayerListDialog(_onlinePlayers, Localization.Get("PlayersOnlineDialogTitle"));
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs EventArgs)

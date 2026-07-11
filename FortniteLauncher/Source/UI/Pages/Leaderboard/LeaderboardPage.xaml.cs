@@ -1,7 +1,9 @@
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
 using System;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace FortniteLauncher.Pages
 {
@@ -11,6 +13,34 @@ namespace FortniteLauncher.Pages
         {
             this.InitializeComponent();
             InitializeWebView();
+
+            Loaded += LeaderboardPage_Loaded;
+            Unloaded += LeaderboardPage_Unloaded;
+        }
+
+        private static string JsString(string value) => JsonSerializer.Serialize(value);
+
+        private void LeaderboardPage_Loaded(object Sender, RoutedEventArgs EventArgs)
+        {
+            Localization.LanguageChanged += OnLanguageChanged;
+
+            if (MyWebView.CoreWebView2 != null)
+            {
+                _ = InjectTranslationScript();
+            }
+        }
+
+        private void LeaderboardPage_Unloaded(object Sender, RoutedEventArgs EventArgs)
+        {
+            Localization.LanguageChanged -= OnLanguageChanged;
+        }
+
+        private async void OnLanguageChanged()
+        {
+            if (MyWebView.CoreWebView2 == null)
+                return;
+
+            await InjectTranslationScript();
         }
 
         private async void InitializeWebView()
@@ -31,6 +61,136 @@ namespace FortniteLauncher.Pages
 
             MyWebView.CoreWebView2.NavigationCompleted += ShowWebView;
             MyWebView.Source = new Uri($"{Definitions.BaseURL}/Leaderboard.html");
+        }
+
+        private async Task InjectTranslationScript()
+        {
+            bool NeedsTranslation = Localization.CurrentLanguage != "en-US";
+
+            string FilterPoints = Localization.Get("FilterPoints");
+            string FilterKills = Localization.Get("FilterKills");
+            string FilterWins = Localization.Get("FilterWins");
+            string SearchPlaceholder = Localization.Get("SearchPlaceholder");
+            string SearchButtonText = Localization.Get("SearchButton");
+            string SearchingButtonText = Localization.Get("SearchingButton");
+            string LoadingLeaderboardTitle = Localization.Get("LoadingLeaderboardTitle");
+            string LoadingLeaderboardSubtext = Localization.Get("LoadingLeaderboardSubtext");
+            string RefreshingLeaderboardTitle = Localization.Get("RefreshingLeaderboardTitle");
+            string RefreshingLeaderboardRow = Localization.Get("RefreshingLeaderboardRow");
+            string ErrorConnectingServer = Localization.Get("ErrorConnectingServer");
+            string ErrorRefreshingData = Localization.Get("ErrorRefreshingData");
+            string HeaderRank = Localization.Get("HeaderRank");
+            string HeaderPlayer = Localization.Get("HeaderPlayer");
+            string HeaderKills = Localization.Get("HeaderKills");
+            string HeaderWins = Localization.Get("HeaderWins");
+            string HeaderPoints = Localization.Get("HeaderPoints");
+            string PercentCompleteFormat = Localization.Get("PercentCompleteFormat").Replace("{0}", "$1");
+            string NextUpdateFormat = Localization.Get("NextUpdateFormat").Replace("{0}", "$1");
+            string LevelFormat = Localization.Get("LevelFormat").Replace("{0}", "$1");
+            string PlayerNotFoundFormat = Localization.Get("PlayerNotFoundFormat").Replace("{0}", "$1").Replace("{1}", "$2");
+
+            string Script = $@"
+    (function() {{
+        try {{
+            const needsTranslation = {(NeedsTranslation ? "true" : "false")};
+
+            function setStaticText() {{
+                const searchInput = document.getElementById('UserSearchInput');
+                if (searchInput) searchInput.placeholder = {JsString(SearchPlaceholder)};
+            }}
+
+            function translateNode(root) {{
+                if (!needsTranslation) return;
+
+                const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+                const replacements = [
+                    ['Loading Leaderboard...', {JsString(LoadingLeaderboardTitle)}],
+                    ['Please wait while we fetch the data', {JsString(LoadingLeaderboardSubtext)}],
+                    ['Refreshing Leaderboard...', {JsString(RefreshingLeaderboardTitle)}],
+                    ['Refreshing leaderboard...', {JsString(RefreshingLeaderboardRow)}],
+                    ['Error connecting to server', {JsString(ErrorConnectingServer)}],
+                    ['Error refreshing data', {JsString(ErrorRefreshingData)}],
+                    ['Searching...', {JsString(SearchingButtonText)}],
+                    ['Search', {JsString(SearchButtonText)}],
+                    ['RANK', {JsString(HeaderRank)}],
+                    ['PLAYER', {JsString(HeaderPlayer)}],
+                    ['KILLS', {JsString(HeaderKills)}],
+                    ['WINS', {JsString(HeaderWins)}],
+                    ['POINTS', {JsString(HeaderPoints)}],
+                    ['Points', {JsString(FilterPoints)}],
+                    ['Kills', {JsString(FilterKills)}],
+                    ['Wins', {JsString(FilterWins)}]
+                ];
+
+                const regexReplacements = [
+                    [/(\d+)% complete/, {JsString(PercentCompleteFormat)}],
+                    [/Next update in ([\d:]+)/, {JsString(NextUpdateFormat)}],
+                    [/Lvl (\d+)/, {JsString(LevelFormat)}],
+                    [/Player &quot;(.+?)&quot; not found among (\d+) players\./, {JsString(PlayerNotFoundFormat)}],
+                    [/Player ""(.+?)"" not found among (\d+) players\./, {JsString(PlayerNotFoundFormat)}]
+                ];
+
+                let node;
+                const nodesToChange = [];
+                while (node = walker.nextNode()) {{
+                    nodesToChange.push(node);
+                }}
+
+                for (const n of nodesToChange) {{
+                    let text = n.nodeValue;
+
+                    for (const [pattern, replacement] of regexReplacements) {{
+                        if (pattern.test(text)) {{
+                            text = text.replace(pattern, replacement);
+                        }}
+                    }}
+
+                    for (const [en, fr] of replacements) {{
+                        if (text.includes(en)) {{
+                            text = text.split(en).join(fr);
+                        }}
+                    }}
+
+                    if (text !== n.nodeValue) {{
+                        n.nodeValue = text;
+                    }}
+                }}
+            }}
+
+            setStaticText();
+            translateNode(document.body);
+
+            if (window.__leaderboardLocalizationObserver) {{
+                window.__leaderboardLocalizationObserver.disconnect();
+            }}
+
+            if (needsTranslation) {{
+                let pending = false;
+                window.__leaderboardLocalizationObserver = new MutationObserver(() => {{
+                    if (pending) return;
+                    pending = true;
+                    requestAnimationFrame(() => {{
+                        pending = false;
+                        setStaticText();
+                        translateNode(document.body);
+                    }});
+                }});
+                window.__leaderboardLocalizationObserver.observe(document.body, {{
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                }});
+            }}
+
+            return 'OK:' + document.body.innerText.substring(0, 200);
+        }} catch (e) {{
+            return 'ERROR:' + e.message;
+        }}
+    }})();
+";
+
+            var Result = await MyWebView.CoreWebView2.ExecuteScriptAsync(Script);
+            System.Diagnostics.Debug.WriteLine($"[LeaderboardLocalization] Script result: {Result}");
         }
 
         private async void ShowWebView(object Sender, CoreWebView2NavigationCompletedEventArgs Event)
@@ -100,6 +260,7 @@ namespace FortniteLauncher.Pages
 ";
 
                 await MyWebView.CoreWebView2.ExecuteScriptAsync(Script);
+                await InjectTranslationScript();
                 MyWebView.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
                 return;
             }

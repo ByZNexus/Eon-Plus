@@ -1,3 +1,6 @@
+const T = window.__loginTranslations || {};
+const t = (key, fallback) => T[key] ?? fallback;
+
 const LoadingScreen = document.getElementById('LoadingScreen');
 const WelcomeScreen = document.getElementById('WelcomeScreen');
 const WelcomeTitle = document.getElementById('WelcomeTitle');
@@ -13,14 +16,66 @@ const LoginBtn = document.getElementById('LoginBtn');
 
 const EonLogo = "https://cdn.eonfn.dev/EonS17.png";
 
-const LoadingMessages = [
+// Apply static translations to the DOM
+function ApplyStaticTranslations() {
+    const emailLabel = document.querySelector('label[for="EmailInput"]');
+    if (emailLabel) emailLabel.textContent = t('emailLabel', 'Email Address');
+
+    const emailInput = document.getElementById('EmailInput');
+    if (emailInput) emailInput.placeholder = t('emailPlaceholder', 'Enter your email');
+
+    const passwordLabel = document.querySelector('label[for="PasswordInput"]');
+    if (passwordLabel) passwordLabel.textContent = t('passwordLabel', 'Password');
+
+    if (PasswordInput) PasswordInput.placeholder = t('passwordPlaceholder', 'Password');
+
+    const forgotLink = document.querySelector('.forgot-link');
+    if (forgotLink) forgotLink.textContent = t('forgotPassword', 'Forgot Password?');
+
+    if (LoginBtn) LoginBtn.textContent = t('signInButton', 'Sign In');
+
+    const subtitle = document.querySelector('.subtitle');
+    if (subtitle) subtitle.textContent = t('subtitle', 'Sign in to access your account');
+
+    const signupContainer = document.querySelector('.signup-container');
+    if (signupContainer) {
+        const signupLink = signupContainer.querySelector('.signup-link');
+        const linkText = signupLink ? signupLink.textContent : 'Sign up';
+        const linkHref = signupLink ? signupLink.getAttribute('href') : '#';
+        signupContainer.innerHTML = `${t('noAccount', "Don't have an account?")} <a href="${linkHref}" class="signup-link" target="_blank">${t('signUpLink', linkText)}</a>`;
+    }
+
+    const bannedTitle = BannedModal?.querySelector('.modal-title');
+    if (bannedTitle) bannedTitle.textContent = t('bannedTitle', 'Account Banned');
+    const bannedMessage = BannedModal?.querySelector('.modal-message');
+    if (bannedMessage) bannedMessage.textContent = t('bannedMessage', bannedMessage.textContent);
+    const bannedButton = BannedModal?.querySelector('.modal-button');
+    if (bannedButton) bannedButton.textContent = t('contactSupport', 'Contact Support');
+
+    const donatorTitle = DonatorModal?.querySelector('.modal-title');
+    if (donatorTitle) donatorTitle.textContent = t('donatorTitle', 'Early Access');
+    const donatorMessage = DonatorModal?.querySelector('.modal-message');
+    if (donatorMessage) donatorMessage.textContent = t('donatorMessage', donatorMessage.textContent);
+    const donatorButton = DonatorModal?.querySelector('.modal-button');
+    if (donatorButton) donatorButton.textContent = t('becomeDonator', 'Become a Donator');
+
+    const updateTitle = UpdateModal?.querySelector('.modal-title');
+    if (updateTitle) updateTitle.textContent = t('updateTitle', 'Update Required');
+    const updateMessage = UpdateModal?.querySelector('.modal-message');
+    if (updateMessage) updateMessage.textContent = t('updateMessage', updateMessage.textContent);
+    if (UpdateButton) UpdateButton.textContent = t('downloadLatest', 'Download Latest Version');
+}
+
+ApplyStaticTranslations();
+
+const LoadingMessages = t('loadingMessages', [
     { text: "Starting Up", subtext: "Getting everything ready for you..." },
     { text: "Checking For Updates", subtext: "Making sure you have the latest version..." },
     { text: "Connecting", subtext: "Connecting to the servers..." },
     { text: "Loading", subtext: "Almost there, pulling everything together..." },
     { text: "Preparing", subtext: "Setting up your session..." },
     { text: "Syncing", subtext: "Updating your data..." },
-];
+]);
 
 const RandomMessage = LoadingMessages[Math.floor(Math.random() * LoadingMessages.length)];
 document.querySelector(".loading-text").textContent = RandomMessage.text;
@@ -119,17 +174,18 @@ function GetDominantColor(ImageUrl, Callback) {
 }
 
 function ShowWelcomeScreen(Username, SkinUrl) {
-    const Messages = [
-        { greeting: `Welcome Back, ${Username || "Player"}!`, subtext: "Great to see you again. Loading your profile..." },
-        { greeting: `Hey ${Username || "Player"}!`, subtext: "Good to have you back. Syncing your progress..." },
-        { greeting: `What's Up, ${Username || "Player"}?`, subtext: "Glad you're here. Getting your account ready..." },
-        { greeting: `Welcome, ${Username || "Player"}!`, subtext: "Happy to see you. Loading your profile..." },
-        { greeting: `Let's Go, ${Username || "Player"}!`, subtext: "Ready to get started. Setting up your session..." },
-        { greeting: `Back Again, ${Username || "Player"}?`, subtext: "Nice to see you. Loading everything up..." },
-    ];
+    const Name = Username || "Player";
+    const RawMessages = t('welcomeMessages', [
+        { greeting: `Welcome Back, ${Name}!`, subtext: "Great to see you again. Loading your profile..." },
+        { greeting: `Hey ${Name}!`, subtext: "Good to have you back. Syncing your progress..." },
+        { greeting: `What's Up, ${Name}?`, subtext: "Glad you're here. Getting your account ready..." },
+        { greeting: `Welcome, ${Name}!`, subtext: "Happy to see you. Loading your profile..." },
+        { greeting: `Let's Go, ${Name}!`, subtext: "Ready to get started. Setting up your session..." },
+        { greeting: `Back Again, ${Name}?`, subtext: "Nice to see you. Loading everything up..." },
+    ]);
 
-    const Msg = Messages[Math.floor(Math.random() * Messages.length)];
-    WelcomeTitle.textContent = Msg.greeting;
+    const Msg = RawMessages[Math.floor(Math.random() * RawMessages.length)];
+    WelcomeTitle.textContent = Msg.greeting.includes("{0}") ? Msg.greeting.replace("{0}", Name) : Msg.greeting;
     document.querySelector(".welcome-subtitle").textContent = Msg.subtext;
 
     const Logo = document.getElementById("WelcomeLogo");
@@ -168,7 +224,7 @@ function ShowUpdateModal(DownloadUrl) {
 
 function ResetLoginButton() {
     LoginBtn.disabled = false;
-    LoginBtn.textContent = "Sign In";
+    LoginBtn.textContent = t('signInButton', 'Sign In');
 }
 
 function ShowLogin() {
@@ -181,12 +237,12 @@ async function HandleLogin() {
     const Password = PasswordInput.value.trim();
 
     if (!Email || !Password) {
-        ShowNotification("Missing Fields", "Please enter both email and password.");
+        ShowNotification(t('missingFieldsTitle', 'Missing Fields'), t('missingFieldsMessage', 'Please enter both email and password.'));
         return;
     }
 
     if (!Email.includes("@")) {
-        ShowNotification("Invalid Email", "Please enter a valid email address.");
+        ShowNotification(t('invalidEmailTitle', 'Invalid Email'), t('invalidEmailMessage', 'Please enter a valid email address.'));
         return;
     }
 
@@ -195,7 +251,7 @@ async function HandleLogin() {
 
     if (!window.chrome || !window.chrome.webview) {
         setTimeout(() => {
-            ShowNotification("Connection Error", "Unable to connect to the application.");
+            ShowNotification(t('connectionErrorTitle', 'Connection Error'), t('connectionErrorMessage', 'Unable to connect to the application.'));
             ResetLoginButton();
         }, 1000);
         return;
@@ -230,12 +286,12 @@ function HandleLoginResponse(Data) {
     }
 
     const Messages = {
-        Deny: "Access Denied.",
-        Invalid: "Your email and/or password is invalid.",
-        Error: "Unknown error. Please try again.",
+        Deny: t('msgDeny', 'Access Denied.'),
+        Invalid: t('msgInvalid', 'Your email and/or password is invalid.'),
+        Error: t('msgError', 'Unknown error. Please try again.'),
     };
 
-    ShowNotification("Login Failed", Messages[Data.Status] || "Login failed. Please try again.");
+    ShowNotification(t('loginFailedTitle', 'Login Failed'), Messages[Data.Status] || t('msgDefault', 'Login failed. Please try again.'));
     ResetLoginButton();
 }
 

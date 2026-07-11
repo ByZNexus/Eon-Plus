@@ -29,12 +29,16 @@ namespace FortniteLauncher
             try
             {
                 UserSettings.LoadSettings();
+
+                if (!string.IsNullOrEmpty(GlobalSettings.Options.Language))
+                    Localization.SetLanguage(GlobalSettings.Options.Language);
+
                 InitializeMainWindow();
                 ConfigureSettings();
             }
             catch (Exception Error)
             {
-                MessageBox.Show($"Report this error to a Moderator: {Error.Message}", "Error");
+                MessageBox.Show($"Report this error on our GitHub page at https://github.com/ByZNexus/Eon-Plus/issues, or make a ticket in the Eon Support server: {Error.Message}", "Error");
             }
         }
 

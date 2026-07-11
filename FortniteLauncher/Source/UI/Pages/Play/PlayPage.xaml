@@ -60,32 +60,33 @@
                     </TeachingTip>
 
                     <StackPanel VerticalAlignment="Center" Grid.Column="1" Margin="15,0,0,0">
-                        <TextBlock Text="{x:Bind DisplayUsername, Mode=OneWay}" 
+                        <TextBlock x:Name="GreetingText"
            FontSize="24"
            FontWeight="Bold"
            Foreground="White"
            Style="{ThemeResource TitleTextBlockStyle}"/>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,1,0,0">
                             <TextBlock x:Name="DescriptionPre"
-               Text="There are currently "
-               FontSize="16"
-               FontWeight="SemiBold"
-               Foreground="White"
-               VerticalAlignment="Center"/>
+                                       Text="There are currently "
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"/>
                             <HyperlinkButton x:Name="PlayerCountButton"
-                     Content="... players"
-                     FontSize="16"
-                     FontWeight="SemiBold"
-                     Foreground="White"
-                     Padding="0"
-                     Margin="2.5,0,2.5,0"
-                     VerticalAlignment="Center"
-                     Click="ShowPlayerList"/>
-                            <TextBlock Text="online on Eon."
-               FontSize="16"
-               FontWeight="SemiBold"
-               Foreground="White"
-               VerticalAlignment="Center"
+                                             Content="... players"
+                                             FontSize="16"
+                                             FontWeight="SemiBold"
+                                             Foreground="White"
+                                             Padding="0"
+                                             Margin="2.5,0,2.5,0"
+                                             VerticalAlignment="Center"
+                                             Click="ShowPlayerList"/>
+                            <TextBlock x:Name="OnlineOnEonText"
+                                       Text="online on Eon."
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"
                                        Margin="2,0,2,0"/>
                         </StackPanel>
                     </StackPanel>
@@ -132,16 +133,14 @@
         </Grid>
 
         <controls:SettingsCard x:Name="LaunchButton"
-                               x:FieldModifier="public"
-                               Grid.Row="2"
-                               Tag="Launch"
-                               Header="{x:Bind local:PlayPage.Season, Mode=OneTime}"
-                               Description="{x:Bind local:PlayPage.Chapter, Mode=OneTime}"
-                               Margin="4,2,4,2"
-                               IsClickEnabled="True"
-                               IsActionIconVisible="False"
-                               Click="Launch"
-                               FontWeight="SemiBold">
+                       x:FieldModifier="public"
+                       Grid.Row="2"
+                       Tag="Launch"
+                       Margin="4,2,4,2"
+                       IsClickEnabled="True"
+                       IsActionIconVisible="False"
+                       Click="Launch"
+                       FontWeight="SemiBold">
             <controls:SettingsCard.HeaderIcon>
                 <FontIcon Glyph="&#xE768;"/>
             </controls:SettingsCard.HeaderIcon>

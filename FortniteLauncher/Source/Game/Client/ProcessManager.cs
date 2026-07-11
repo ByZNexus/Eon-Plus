@@ -1,8 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 class Processes
 {
+    public static void RestartLauncher()
+    {
+        var exePath = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+        System.Diagnostics.Process.Start(exePath);
+        Environment.Exit(0);
+    }
     public static void Kill(string ProcessName)
     {
         Process[] Processes = Process.GetProcessesByName(ProcessName);

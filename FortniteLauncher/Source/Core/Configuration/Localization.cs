@@ -188,6 +188,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Ready to get started. Setting up your session...",
                 ["WelcomeMsg6Greeting"] = "Back Again, {0}?",
                 ["WelcomeMsg6Sub"] = "Nice to see you. Loading everything up...",
+                ["UpdateAvailableTitle"] = "Update Available",
+                ["UpdateAvailableDescription"] = "A new Eon + update is available. Would you like to go to the download page",
+                ["CurrentVersionFormat"] = "Current Version : {0}",
+                ["LatestVersionFormat"] = "Latest Version : {0}",
+                ["GoToReleaseButton"] = "Go to Release",
+                ["LaterButton"] = "Later",
             },
             ["fr-FR"] = new Dictionary<string, string>
             {
@@ -361,6 +367,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Prêt à commencer. Configuration de ta session...",
                 ["WelcomeMsg6Greeting"] = "De retour, {0} ?",
                 ["WelcomeMsg6Sub"] = "Ravi de te revoir. Chargement de tout...",
+                ["UpdateAvailableTitle"] = "Mise à jour disponible",
+                ["UpdateAvailableDescription"] = "Une nouvelle mise à jour d'Eon + est disponible. Voulez-vous accéder à la page de téléchargement",
+                ["CurrentVersionFormat"] = "Version actuelle : {0}",
+                ["LatestVersionFormat"] = "Dernière version : {0}",
+                ["GoToReleaseButton"] = "Accéder à la version",
+                ["LaterButton"] = "Plus tard",
             },
             ["es-ES"] = new Dictionary<string, string>
             {
@@ -534,6 +546,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Listo para empezar. Configurando tu sesión...",
                 ["WelcomeMsg6Greeting"] = "¿De vuelta, {0}?",
                 ["WelcomeMsg6Sub"] = "Qué bueno verte. Cargando todo...",
+                ["UpdateAvailableTitle"] = "Actualización disponible",
+                ["UpdateAvailableDescription"] = "Hay una nueva actualización de Eon + disponible. ¿Quieres ir a la página de descarga",
+                ["CurrentVersionFormat"] = "Versión actual : {0}",
+                ["LatestVersionFormat"] = "Última versión : {0}",
+                ["GoToReleaseButton"] = "Ir a la versión",
+                ["LaterButton"] = "Más tarde",
             },
             ["pt-PT"] = new Dictionary<string, string>
             {
@@ -707,6 +725,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Pronto para começar. A configurar a tua sessão...",
                 ["WelcomeMsg6Greeting"] = "De volta, {0}?",
                 ["WelcomeMsg6Sub"] = "Bom ver-te. A carregar tudo...",
+                ["UpdateAvailableTitle"] = "Atualização disponível",
+                ["UpdateAvailableDescription"] = "Está disponível uma nova atualização do Eon +. Queres ir para a página de download",
+                ["CurrentVersionFormat"] = "Versão atual : {0}",
+                ["LatestVersionFormat"] = "Versão mais recente : {0}",
+                ["GoToReleaseButton"] = "Ir para a versão",
+                ["LaterButton"] = "Mais tarde",
             },
             ["de-DE"] = new Dictionary<string, string>
             {
@@ -880,6 +904,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Bereit loszulegen. Deine Sitzung wird eingerichtet...",
                 ["WelcomeMsg6Greeting"] = "Wieder da, {0}?",
                 ["WelcomeMsg6Sub"] = "Schön, dich zu sehen. Alles wird geladen...",
+                ["UpdateAvailableTitle"] = "Update verfügbar",
+                ["UpdateAvailableDescription"] = "Ein neues Eon + Update ist verfügbar. Möchtest du zur Download-Seite gehen",
+                ["CurrentVersionFormat"] = "Aktuelle Version : {0}",
+                ["LatestVersionFormat"] = "Neueste Version : {0}",
+                ["GoToReleaseButton"] = "Zur Version",
+                ["LaterButton"] = "Später",
             },
             ["nl-NL"] = new Dictionary<string, string>
             {
@@ -1053,6 +1083,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Klaar om te beginnen. Je sessie wordt ingesteld...",
                 ["WelcomeMsg6Greeting"] = "Weer terug, {0}?",
                 ["WelcomeMsg6Sub"] = "Fijn je te zien. Alles wordt geladen...",
+                ["UpdateAvailableTitle"] = "Update beschikbaar",
+                ["UpdateAvailableDescription"] = "Er is een nieuwe Eon + update beschikbaar. Wil je naar de downloadpagina gaan",
+                ["CurrentVersionFormat"] = "Huidige versie : {0}",
+                ["LatestVersionFormat"] = "Nieuwste versie : {0}",
+                ["GoToReleaseButton"] = "Naar de versie",
+                ["LaterButton"] = "Later",
             },
             ["pl-PL"] = new Dictionary<string, string>
             {
@@ -1226,6 +1262,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Gotowy do startu. Konfigurowanie sesji...",
                 ["WelcomeMsg6Greeting"] = "Znowu tutaj, {0}?",
                 ["WelcomeMsg6Sub"] = "Miło Cię widzieć. Ładowanie wszystkiego...",
+                ["UpdateAvailableTitle"] = "Dostępna aktualizacja",
+                ["UpdateAvailableDescription"] = "Dostępna jest nowa aktualizacja Eon +. Czy chcesz przejść do strony pobierania",
+                ["CurrentVersionFormat"] = "Obecna wersja : {0}",
+                ["LatestVersionFormat"] = "Najnowsza wersja : {0}",
+                ["GoToReleaseButton"] = "Przejdź do wersji",
+                ["LaterButton"] = "Później",
             },
             ["ru-RU"] = new Dictionary<string, string>
             {
@@ -1399,6 +1441,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Готовы начать. Настраиваем вашу сессию...",
                 ["WelcomeMsg6Greeting"] = "Снова здесь, {0}?",
                 ["WelcomeMsg6Sub"] = "Рады вас видеть. Загружаем всё...",
+                ["UpdateAvailableTitle"] = "Доступно обновление",
+                ["UpdateAvailableDescription"] = "Доступно новое обновление Eon +. Хотите перейти на страницу загрузки",
+                ["CurrentVersionFormat"] = "Текущая версия : {0}",
+                ["LatestVersionFormat"] = "Последняя версия : {0}",
+                ["GoToReleaseButton"] = "Перейти к версии",
+                ["LaterButton"] = "Позже",
             },
             ["el-GR"] = new Dictionary<string, string>
             {
@@ -1572,6 +1620,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "Έτοιμος να ξεκινήσεις. Ρύθμιση συνεδρίας...",
                 ["WelcomeMsg6Greeting"] = "Πάλι εδώ, {0};",
                 ["WelcomeMsg6Sub"] = "Χαιρόμαστε που σε βλέπουμε. Φόρτωση όλων...",
+                ["UpdateAvailableTitle"] = "Διαθέσιμη ενημέρωση",
+                ["UpdateAvailableDescription"] = "Μια νέα ενημέρωση του Eon + είναι διαθέσιμη. Θέλετε να μεταβείτε στη σελίδα λήψης",
+                ["CurrentVersionFormat"] = "Τρέχουσα έκδοση : {0}",
+                ["LatestVersionFormat"] = "Τελευταία έκδοση : {0}",
+                ["GoToReleaseButton"] = "Μετάβαση στην έκδοση",
+                ["LaterButton"] = "Αργότερα",
             },
             ["zh-CN"] = new Dictionary<string, string>
             {
@@ -1745,6 +1799,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "准备开始。正在设置您的会话...",
                 ["WelcomeMsg6Greeting"] = "又见面了，{0}？",
                 ["WelcomeMsg6Sub"] = "很高兴见到您。正在加载一切...",
+                ["UpdateAvailableTitle"] = "有可用更新",
+                ["UpdateAvailableDescription"] = "Eon + 有新的更新可用。您想前往下载页面吗",
+                ["CurrentVersionFormat"] = "当前版本 : {0}",
+                ["LatestVersionFormat"] = "最新版本 : {0}",
+                ["GoToReleaseButton"] = "前往下载页面",
+                ["LaterButton"] = "稍后",
             },
             ["ja-JP"] = new Dictionary<string, string>
             {
@@ -1918,6 +1978,12 @@ namespace FortniteLauncher
                 ["WelcomeMsg5Sub"] = "準備完了です。セッションを設定しています...",
                 ["WelcomeMsg6Greeting"] = "また来てくれましたか、{0}さん？",
                 ["WelcomeMsg6Sub"] = "お会いできて嬉しいです。すべて読み込んでいます...",
+                ["UpdateAvailableTitle"] = "アップデートが利用可能です",
+                ["UpdateAvailableDescription"] = "Eon + の新しいアップデートが利用可能です。ダウンロードページに移動しますか",
+                ["CurrentVersionFormat"] = "現在のバージョン : {0}",
+                ["LatestVersionFormat"] = "最新バージョン : {0}",
+                ["GoToReleaseButton"] = "ダウンロードページへ",
+                ["LaterButton"] = "後で",
             },
         };
 

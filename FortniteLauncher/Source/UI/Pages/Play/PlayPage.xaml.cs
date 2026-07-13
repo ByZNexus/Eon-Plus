@@ -217,6 +217,12 @@ namespace FortniteLauncher.Pages
         private void Tiktok(object Sender, RoutedEventArgs EventArgs) => OpenUri(ProjectDefinitions.Tiktok);
         private void Donations(object Sender, RoutedEventArgs EventArgs) => OpenUri(ProjectDefinitions.DonationsURL);
 
+        private void LaunchButton_Loaded(object Sender, RoutedEventArgs EventArgs)
+        {
+            var Storyboard = (Storyboard)Resources["LaunchGlowLoopStoryboard"];
+            Storyboard.Begin();
+        }
+
         public void UpdateIcons(string Theme)
         {
             string Suffix = Theme == "Light" ? "_B" : string.Empty;
@@ -230,6 +236,8 @@ namespace FortniteLauncher.Pages
             {
                 Source = new BitmapImage(new Uri($"ms-appx:///Content/Texture/UI/T_Tiktok{Suffix}.png"))
             };
+
+            LaunchGlowLayers.Visibility = Theme == "Galaxy" ? Visibility.Collapsed : Visibility.Visible;
         }
     }
 }

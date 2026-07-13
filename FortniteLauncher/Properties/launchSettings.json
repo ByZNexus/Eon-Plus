@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Fortnite Launcher": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

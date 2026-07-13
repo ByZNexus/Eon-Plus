@@ -5,7 +5,7 @@
     xmlns:local="using:FortniteLauncher.Pages"
     xmlns:controls="using:CommunityToolkit.Labs.WinUI"
     xmlns:media="using:CommunityToolkit.WinUI.UI.Media"
-xmlns:ui="using:CommunityToolkit.WinUI.UI"
+    xmlns:ui="using:CommunityToolkit.WinUI.UI"
     NavigationCacheMode="Enabled">
 
     <Page.Resources>
@@ -22,6 +22,13 @@ xmlns:ui="using:CommunityToolkit.WinUI.UI"
                                    BlurRadius="28"
                                    Offset="0"
                                    CornerRadius="8"/>
+
+        <Storyboard x:Key="LaunchGlowLoopStoryboard" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="LaunchGlowRotate"
+                              Storyboard.TargetProperty="Angle"
+                              From="0" To="360"
+                              Duration="0:0:5"/>
+        </Storyboard>
     </Page.Resources>
 
     <Grid Margin="8">
@@ -158,18 +165,43 @@ xmlns:ui="using:CommunityToolkit.WinUI.UI"
             </controls:SettingsCard>
         </Grid>
 
-        <controls:SettingsCard x:Name="LaunchButton"
-                       x:FieldModifier="public"
-                       Grid.Row="2"
-                       Tag="Launch"
-                       Margin="4,2,4,2"
-                       IsClickEnabled="True"
-                       IsActionIconVisible="False"
-                       Click="Launch"
-                       FontWeight="SemiBold">
-            <controls:SettingsCard.HeaderIcon>
-                <FontIcon Glyph="&#xE768;"/>
-            </controls:SettingsCard.HeaderIcon>
-        </controls:SettingsCard>
+        <Grid Grid.Row="2" Margin="4,2,4,2">
+            <Grid x:Name="LaunchGlowLayers">
+                <Border Background="#9B5CFF" Opacity="0.0" CornerRadius="22" Margin="-20"/>
+                <Border Background="#9B5CFF" Opacity="0.0" CornerRadius="18" Margin="-13"/>
+                <Border Background="#9B5CFF" Opacity="0.0" CornerRadius="14" Margin="-7"/>
+                <Border Background="#9B5CFF" Opacity="0.0" CornerRadius="10" Margin="-3"/>
+            </Grid>
+
+            <controls:SettingsCard x:Name="LaunchButton"
+                   x:FieldModifier="public"
+                   Tag="Launch"
+                   IsClickEnabled="True"
+                   IsActionIconVisible="False"
+                   Click="Launch"
+                   FontWeight="SemiBold"
+                   CornerRadius="8">
+                <controls:SettingsCard.HeaderIcon>
+                    <FontIcon Glyph="&#xE768;"/>
+                </controls:SettingsCard.HeaderIcon>
+            </controls:SettingsCard>
+
+            <Border x:Name="LaunchBorderOverlay"
+            CornerRadius="8"
+            BorderThickness="1.2"
+            IsHitTestVisible="False"
+            Loaded="LaunchButton_Loaded">
+                <Border.BorderBrush>
+                    <LinearGradientBrush MappingMode="RelativeToBoundingBox" StartPoint="0,0" EndPoint="1,1">
+                        <LinearGradientBrush.RelativeTransform>
+                            <RotateTransform x:Name="LaunchGlowRotate" CenterX="0.5" CenterY="0.5"/>
+                        </LinearGradientBrush.RelativeTransform>
+                        <GradientStop Color="#9B5CFF" Offset="0"/>
+                        <GradientStop Color="#39E5C5" Offset="0.5"/>
+                        <GradientStop Color="#9B5CFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+            </Border>
+        </Grid>
     </Grid>
 </Page>

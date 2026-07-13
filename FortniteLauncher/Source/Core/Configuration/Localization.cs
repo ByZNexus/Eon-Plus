@@ -18,6 +18,7 @@ namespace FortniteLauncher
         {
             ["en-US"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Launch",
                 ["AppearanceHeader"] = "Appearance and Behavior",
                 ["SoundHeader"] = "Sound Effects",
                 ["SoundDescription"] = "Hear sound effects while navigating the launcher menus.",
@@ -197,6 +198,7 @@ namespace FortniteLauncher
             },
             ["fr-FR"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Lancer",
                 ["AppearanceHeader"] = "Apparence et comportement",
                 ["SoundHeader"] = "Effets sonores",
                 ["SoundDescription"] = "Entendre des effets sonores en naviguant dans les menus du launcher.",
@@ -376,6 +378,7 @@ namespace FortniteLauncher
             },
             ["es-ES"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Iniciar",
                 ["AppearanceHeader"] = "Apariencia y comportamiento",
                 ["SoundHeader"] = "Efectos de sonido",
                 ["SoundDescription"] = "Escuchar efectos de sonido al navegar por los menús del launcher.",
@@ -555,6 +558,7 @@ namespace FortniteLauncher
             },
             ["pt-PT"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Iniciar",
                 ["AppearanceHeader"] = "Aparência e comportamento",
                 ["SoundHeader"] = "Efeitos sonoros",
                 ["SoundDescription"] = "Ouvir efeitos sonoros ao navegar nos menus do launcher.",
@@ -734,6 +738,7 @@ namespace FortniteLauncher
             },
             ["de-DE"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Starten",
                 ["AppearanceHeader"] = "Erscheinungsbild und Verhalten",
                 ["SoundHeader"] = "Soundeffekte",
                 ["SoundDescription"] = "Soundeffekte beim Navigieren durch die Launcher-Menüs hören.",
@@ -913,6 +918,7 @@ namespace FortniteLauncher
             },
             ["nl-NL"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Starten",
                 ["AppearanceHeader"] = "Uiterlijk en gedrag",
                 ["SoundHeader"] = "Geluidseffecten",
                 ["SoundDescription"] = "Geluidseffecten horen tijdens het navigeren door de launcher-menu's.",
@@ -1092,6 +1098,7 @@ namespace FortniteLauncher
             },
             ["pl-PL"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Uruchom",
                 ["AppearanceHeader"] = "Wygląd i zachowanie",
                 ["SoundHeader"] = "Efekty dźwiękowe",
                 ["SoundDescription"] = "Słuchaj efektów dźwiękowych podczas nawigacji po menu launchera.",
@@ -1271,6 +1278,7 @@ namespace FortniteLauncher
             },
             ["ru-RU"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Запустить",
                 ["AppearanceHeader"] = "Внешний вид и поведение",
                 ["SoundHeader"] = "Звуковые эффекты",
                 ["SoundDescription"] = "Слышать звуковые эффекты при навигации по меню лаунчера.",
@@ -1450,6 +1458,7 @@ namespace FortniteLauncher
             },
             ["el-GR"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "Εκκίνηση",
                 ["AppearanceHeader"] = "Εμφάνιση και συμπεριφορά",
                 ["SoundHeader"] = "Ηχητικά εφέ",
                 ["SoundDescription"] = "Ακούστε ηχητικά εφέ κατά την πλοήγηση στα μενού του launcher.",
@@ -1629,6 +1638,7 @@ namespace FortniteLauncher
             },
             ["zh-CN"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "启动",
                 ["AppearanceHeader"] = "外观和行为",
                 ["SoundHeader"] = "音效",
                 ["SoundDescription"] = "在浏览启动器菜单时播放音效。",
@@ -1808,6 +1818,7 @@ namespace FortniteLauncher
             },
             ["ja-JP"] = new Dictionary<string, string>
             {
+                ["LaunchButtonText"] = "起動",
                 ["AppearanceHeader"] = "外観と動作",
                 ["SoundHeader"] = "サウンドエフェクト",
                 ["SoundDescription"] = "ランチャーメニューを移動する際にサウンドエフェクトを再生します。",

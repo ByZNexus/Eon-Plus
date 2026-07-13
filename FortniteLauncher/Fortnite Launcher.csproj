@@ -72,12 +72,12 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Core" Version="7.1.2" />
-		<PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
 		<PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250702007-experimental4" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="RestSharp" Version="112.1.0" />
 		<PackageReference Include="WinUIEx" Version="2.6.0" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version ="7.1.2" />
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
 

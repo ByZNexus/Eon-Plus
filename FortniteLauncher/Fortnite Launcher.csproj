@@ -22,7 +22,7 @@
 		<Authors>David</Authors>
 		<Copyright>David</Copyright>
 		<Version>1.0.0</Version>
-		<AssemblyVersion>1.1.0</AssemblyVersion>
+		<AssemblyVersion>1.1.1</AssemblyVersion>
 		<FileVersion>1.0.0</FileVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>

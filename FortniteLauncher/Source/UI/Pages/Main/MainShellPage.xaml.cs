@@ -1,8 +1,11 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using System;
+using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace FortniteLauncher.Pages
 {
@@ -10,6 +13,7 @@ namespace FortniteLauncher.Pages
     {
         public static NavigationView STATIC_MainNavigation;
         private bool _hasLoadedDefaultPage;
+        private bool _shopServiceAvailable;
 
         public void SetBackground(Brush Brush)
         {
@@ -23,6 +27,7 @@ namespace FortniteLauncher.Pages
         {
             this.InitializeComponent();
             NavigationService.InitializeNavigationService(MainNavigation, MainBreadcrumb, RootFrame);
+            MainNavigation.LayoutUpdated += MainNavigation_LayoutUpdated;
         }
 
         private void MainNavigation_SelectionChanged(NavigationView Sender, NavigationViewSelectionChangedEventArgs Args)
@@ -52,6 +57,7 @@ namespace FortniteLauncher.Pages
         {
             STATIC_MainNavigation = MainNavigation;
             SettingsPage.ApplyTheme(GlobalSettings.Options.Theme ?? "Default");
+            _ = CheckShopServiceAvailabilityAsync();
 
             if (_hasLoadedDefaultPage)
                 return;
@@ -67,6 +73,36 @@ namespace FortniteLauncher.Pages
                 NavigationService.ChangeBreadcrumbVisibility(false);
             });
         }
+
+        private async Task CheckShopServiceAvailabilityAsync()
+        {
+            var isAvailable = await new HistoricalShopService().IsShopServiceAvailableAsync();
+            _shopServiceAvailable = isAvailable;
+            ItemShopItem.IsEnabled = isAvailable;
+            ShopServiceUnavailableOverlay.Visibility = isAvailable ? Visibility.Collapsed : Visibility.Visible;
+            ToolTipService.SetToolTip(ItemShopItem, isAvailable ? null : "Shop Services are currently unavailable");
+            UpdateShopServiceUnavailableOverlay();
+        }
+
+        private void MainNavigation_LayoutUpdated(object sender, object e)
+        {
+            if (!_shopServiceAvailable)
+                UpdateShopServiceUnavailableOverlay();
+        }
+
+        private void UpdateShopServiceUnavailableOverlay()
+        {
+            if (ItemShopItem.ActualWidth <= 0 || ItemShopItem.ActualHeight <= 0) return;
+
+            var bounds = ItemShopItem.TransformToVisual(PageRoot).TransformBounds(
+                new Rect(0, 0, ItemShopItem.ActualWidth, ItemShopItem.ActualHeight));
+            Canvas.SetLeft(ShopServiceUnavailableOverlay, bounds.X);
+            Canvas.SetTop(ShopServiceUnavailableOverlay, bounds.Y);
+            ShopServiceUnavailableOverlay.Width = bounds.Width;
+            ShopServiceUnavailableOverlay.Height = bounds.Height;
+        }
+
+        private void ShopServiceUnavailableOverlay_PointerPressed(object sender, PointerRoutedEventArgs e) => e.Handled = true;
 
         public void UpdateIcons(string Theme)
         {

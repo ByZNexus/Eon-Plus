@@ -28,6 +28,7 @@ namespace FortniteLauncher.Pages
         {
             SoundToggle.IsOn = GlobalSettings.Options.IsSoundEnabled;
             BubbleBuildsToggle.IsOn = GlobalSettings.Options.IsBubbleBuildsEnabled;
+            ShowRarityBadgesToggle.IsOn = GlobalSettings.Options.ShowRarityBadges;
 
             if (ThemeSelector != null)
             {
@@ -74,6 +75,13 @@ namespace FortniteLauncher.Pages
                 ?? LanguageSelector.Items.Cast<ComboBoxItem>().FirstOrDefault();
 
             ApplyLocalization();
+        }
+
+        private void ShowRarityBadgesToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            GlobalSettings.Options.ShowRarityBadges = ShowRarityBadgesToggle.IsOn;
+            UserSettings.SaveSettings();
+            ShopAppearanceSettings.NotifyChanged();
         }
 
         private void ThemeChanged(object Sender, SelectionChangedEventArgs Event)

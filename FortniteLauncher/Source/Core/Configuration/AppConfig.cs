@@ -10,4 +10,5 @@
     public string SkinUrl { get; set; }
     public string Theme { get; set; } = "Dark";
     public string Language { get; set; } = "en-US";
+    public bool ShowRarityBadges { get; set; } = true;
 }

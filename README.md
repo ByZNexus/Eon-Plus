@@ -46,6 +46,7 @@ Built with **WinUI 3**, **C#**, and **WebView2**
 
 - 👥 Real-time player count
 - ⚡ Eon + update notifications
+- 🛍️ Native Eon Item Shop with live rotations and item details
 - 🌍 Web-powered content through WebView2
 
 ---

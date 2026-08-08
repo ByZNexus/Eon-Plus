@@ -21,9 +21,9 @@
 		<Product>Eon</Product>
 		<Authors>David</Authors>
 		<Copyright>David</Copyright>
-		<Version>1.0.0</Version>
-		<AssemblyVersion>1.1.1</AssemblyVersion>
-		<FileVersion>1.0.0</FileVersion>
+		<Version>1.1.2</Version>
+		<AssemblyVersion>1.1.2</AssemblyVersion>
+		<FileVersion>1.1.2</FileVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
@@ -154,6 +154,15 @@
 		<Content Include="Content\Texture\UI\T_Donate_B.png" />
 		<Content Include="Content\Texture\UI\T_Tiktok.png" />
 		<Content Include="Content\Texture\UI\T_Tiktok_B.png" />
+		<Content Include="Content\Texture\Shop\Rarity\common.svg" />
+		<Content Include="Content\Texture\Shop\Rarity\uncommon.svg" />
+		<Content Include="Content\Texture\Shop\Rarity\rare.svg" />
+		<Content Include="Content\Texture\Shop\Rarity\epic.svg" />
+		<Content Include="Content\Texture\Shop\Rarity\legendary.svg" />
+		<Content Include="Content\Texture\Shop\Rarity\icon.svg" />
+		<Content Include="Content\Texture\Shop\Rarity\marvel.svg" />
+		<Content Include="Content\Texture\Shop\Rarity\dc.svg" />
+		<Content Include="Content\Texture\Shop\Rarity\special.svg" />
 		<Content Include="Source\UI\Pages\Authentication\Public\LoginPage.css">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>

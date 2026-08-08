@@ -93,7 +93,17 @@ namespace FortniteLauncher
             SetTitleBar(AppTitleBar);
             this.SetWindowSize(1200, 725);
             this.CenterOnScreen();
-            this.SetIcon("Content\\Texture\\Branding\\EonPlus.ico");
+            var iconPath = System.IO.Path.Combine(
+                AppContext.BaseDirectory,
+                "Content",
+                "Texture",
+                "Branding",
+                "EonPlus.ico");
+            if (System.IO.File.Exists(iconPath))
+            {
+                this.SetIcon(iconPath);
+                TaskBarIcon = WinUIEx.Icon.FromFile(iconPath);
+            }
             Title = LauncherName;
             SetTitleBarColors();
         }

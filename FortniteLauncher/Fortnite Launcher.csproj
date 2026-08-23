@@ -48,6 +48,7 @@
 		<None Remove="Pages\MainShellPage.xaml" />
 		<None Remove="Pages\Play.xaml" />
 		<None Remove="Pages\Settings.xaml" />
+		<None Remove="Source\UI\Pages\Casino\CasinoPage.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -88,6 +89,9 @@
 		<Page Update="Pages\MainShellPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
+		<Page Update="Source\UI\Pages\Casino\CasinoPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
@@ -106,6 +110,7 @@
 		<Content Include="Content\Texture\Branding\Eon.ico">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+		<Content Include="Content\Texture\Icons\IC_Casino.svg" />
 		<Content Include="Content\Texture\Icons\IC_Download.svg" />
 		<Content Include="Content\Texture\Icons\IC_Leaderboard.svg" />
 		<Content Include="Content\Texture\Icons\IC_Play.svg" />

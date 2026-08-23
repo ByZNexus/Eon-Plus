@@ -117,6 +117,16 @@
                         </ImageIcon>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <NavigationViewItem x:Name="CasinoItem">
+                    <NavigationViewItem.Icon>
+                        <ImageIcon Width="24" Height="24" Margin="-4">
+                            <ImageIcon.Source>
+                                <SvgImageSource UriSource="ms-appx:///Content/Texture/Icons/IC_Casino.svg"/>
+                            </ImageIcon.Source>
+                        </ImageIcon>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <NavigationView.FooterMenuItems>

@@ -21,6 +21,8 @@ Built with **WinUI 3**, **C#**, and **WebView2**
 
 ---
 
+# ❌ Starting August 26th, this launcher is now *outdated* and it's developement came to a halt. Please use the normal Eon Launcher, if you wish to fork my repository, please have *WRITTEN* permission from the Eon Project's owner as said in it's license.❌
+
 # 📸 Preview
 
 <p align="center">

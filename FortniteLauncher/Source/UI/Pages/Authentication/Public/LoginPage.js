@@ -268,8 +268,8 @@ function HandleLoginResponse(Data) {
     }
 
     if (Data.Status === "OUTDATED") {
-        ShowUpdateModal(Data.DownloadUrl);
-        ResetLoginButton();
+        LoginContainer.classList.remove("show");
+        ShowWelcomeScreen(Data.Username, Data.SkinUrl);
         return;
     }
 

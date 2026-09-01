@@ -13,10 +13,18 @@ public class ApiResponse
     public string Skin { get; set; }
 }
 
+public class VersionResponse
+{
+    public string Status { get; set; }
+    public string LatestVersion { get; set; }
+}
+
 class Authenticator
 {
     public static async Task<ApiResponse> CheckLogin(string Email, string Password)
     {
+        await UpdateLatestVersion();
+
         var Client = new RestClient($"{Definitions.BaseURL}:8443/");
         var Request = new RestRequest("/api/v1/auth/login", Method.Post)
             .AddParameter("email", Email)
@@ -50,6 +58,30 @@ class Authenticator
         catch (Exception Error)
         {
             return await ErrorResponse(Error.Message, "Login Error");
+        }
+    }
+
+    private static async Task UpdateLatestVersion()
+    {
+        try
+        {
+            var Client = new RestClient($"{Definitions.BaseURL}:8443/");
+            var Request = new RestRequest("/api/v1/auth/login", Method.Post)
+                .AddHeader("X-Launcher-Version", Definitions.CurrentVersion);
+
+            var VersionResult = await Client.ExecuteAsync(Request);
+            if (string.IsNullOrWhiteSpace(VersionResult.Content))
+                return;
+
+            var VersionData = JsonConvert.DeserializeObject<VersionResponse>(VersionResult.Content);
+            if (VersionData != null && !string.IsNullOrWhiteSpace(VersionData.LatestVersion))
+            {
+                Definitions.CurrentVersion = VersionData.LatestVersion;
+            }
+        }
+        catch (Exception Error)
+        {
+            DialogService.ShowSimpleDialog(Error.Message, "Login Error");
         }
     }
 

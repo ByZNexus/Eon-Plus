@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using static GamePaths;
+
 class FNProc
 {
-    public static async Task<Process> Launch(string GamePath, bool FreezeProc = true, string Arg = "")
+    public static async Task<Process> Launch(string GamePath)
     {
         Process Process = new Process
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = (GamePath.Contains($"{ProjectDefinitions.Name}_EAC.exe") && !Definitions.bEnableEAC) ? $"{GlobalSettings.Options.FortnitePath}\\FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping.exe" : GamePath,
-                Arguments = $"{Arg} -epicapp=Fortnite -epicenv=Prod -epiclocale=en-us -epicportal -nobe -fromfl=eac -skippatchcheck -fltoken=3db3ba5dcbd2e16703f3978d -caldera=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiYmU5ZGE1YzJmYmVhNDQwN2IyZjQwZWJhYWQ4NTlhZDQiLCJnZW5lcmF0ZWQiOjE2Mzg3MTcyNzgsImNhbGRlcmFHdWlkIjoiMzgxMGI4NjMtMmE2NS00NDU3LTliNTgtNGRhYjNiNDgyYTg2IiwiYWNQcm92aWRlciI6IkVhc3lBbnRpQ2hlYXQiLCJub3RlcyI6IiIsImZhbGxiYWNrIjpmYWxzZX0.VAWQB67RTxhiWOxx7DBjnzDnXyyEnX7OljJm-j2d88G_WgwQ9wrE6lwMEHZHjBd1ISJdUO1UVUqkfLdU5nofBQ -AUTH_TYPE=epic",
+                FileName = FNLaunchHelper.GetDirectory(LaunchInfoType.FileName, GamePath),
+                Arguments = FNLaunchHelper.GetDirectory(LaunchInfoType.Arguments, GamePath),
                 UseShellExecute = false,
                 CreateNoWindow = false,
-                WorkingDirectory = Path.GetDirectoryName((GamePath.Contains($"{ProjectDefinitions.Name}_EAC.exe") && !Definitions.bEnableEAC) ? $"{GlobalSettings.Options.FortnitePath}\\FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping.exe" : GamePath)
+                WorkingDirectory = FNLaunchHelper.GetDirectory(LaunchInfoType.WorkingDirectory, GamePath)
             }
         };
 
         Process.Start();
 
-        if (FreezeProc)
+        if (!GamePath.Contains(Executables.FortniteClient_Win64_Shipping.Process(false)))
         {
             foreach (ProcessThread ProcessThread in Process.Threads)
             {

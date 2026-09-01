@@ -33,15 +33,15 @@ class EAC
         if (Directory.Exists(Path.Combine(GamePath, "EasyAntiCheat")))
             Directory.Delete(Path.Combine(GamePath, "EasyAntiCheat"), true);
 
-        if (File.Exists(Path.Combine(GamePath, "Eon_EAC.exe")))
-            File.Delete(Path.Combine(GamePath, "Eon_EAC.exe"));
+        if (File.Exists(Path.Combine(GamePath, $"{ProjectDefinitions.Name}_EAC.exe")))
+            File.Delete(Path.Combine(GamePath, $"{ProjectDefinitions.Name}_EAC.exe"));
 
         await Task.CompletedTask;
     }
 
     private static async Task DownloadFiles()
     {
-        await DownloadService.File($"{Definitions.CDN_URL}/Eon_EAC.exe", GamePath, "Eon_EAC.exe");
+        await DownloadService.File($"{Definitions.CDN_URL}/{ProjectDefinitions.Name}_EAC.exe", GamePath, $"{ProjectDefinitions.Name}_EAC.exe");
         await DownloadService.File($"{Definitions.CDN_URL}/EasyAntiCheat.zip", GamePath, "EasyAntiCheat.zip");
     }
 

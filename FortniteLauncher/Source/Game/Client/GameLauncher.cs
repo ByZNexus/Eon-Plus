@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Threading.Tasks;
+using static GamePaths;
 
 class Fortnite
 {
-    public static async Task Launch(string GamePath)
+    public static async Task Launch()
     {
         try
         {
             await RequiredFilesDownloader.Download();
-            if (Anticheat.CheckForCorruption(GamePath) != Anticheat.EPlayStatus.Playable)
+            if (Anticheat.CheckForCorruption() != Anticheat.EPlayStatus.Playable)
                 return;
 
             await EAC.Execute(EACOperation.Initialize);
-            await FNProc.Launch($"{GamePath}\\FortniteGame\\Binaries\\Win64\\FortniteLauncher.exe");
-            await FNProc.Launch($"{GamePath}\\FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping_BE.exe");
-            await FNProc.Launch($"{GamePath}\\FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping_EAC.exe");
-            await FNProc.Launch($"{GamePath}\\Eon_EAC.exe", false, $"-AUTH_LOGIN={GlobalSettings.Options.Email} -AUTH_PASSWORD={GlobalSettings.Options.Password}");
+            await FNProc.Launch(Executables.FortniteLauncher.Process());
+            await FNProc.Launch(Executables.FortniteClient_Win64_Shipping_BE.Process());
+            await FNProc.Launch(Executables.FortniteClient_Win64_Shipping_EAC.Process());
+            await FNProc.Launch(Executables.FortniteClient_Win64_Shipping.Process());
 
             LaunchStatusService.OnGameOpened();
         }

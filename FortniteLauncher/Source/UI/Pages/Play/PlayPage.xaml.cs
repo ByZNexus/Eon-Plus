@@ -85,7 +85,7 @@ namespace FortniteLauncher.Pages
             UI.ShowProgressRing((SettingsCard)Sender, true);
 
             await Processes.ForceCloseFortnite();
-            await Fortnite.Launch(GlobalSettings.Options.FortnitePath);
+            await Fortnite.Launch();
 
             DownloadInfo.IsOpen = false;
         }

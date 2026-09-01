@@ -7,10 +7,12 @@ class Anticheat
 {
     public enum EPlayStatus { Corrupted, Playable }
 
-    public static EPlayStatus CheckForCorruption(string GamePath)
+    public static EPlayStatus CheckForCorruption()
     {
         try
         {
+            string GamePath = GlobalSettings.Options.FortnitePath;
+
             var ContentPath = Path.Combine(GamePath, "FortniteGame", "Content", "Paks");
             if (!Directory.Exists(ContentPath))
             {

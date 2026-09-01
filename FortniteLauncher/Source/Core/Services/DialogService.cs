@@ -188,7 +188,7 @@ class DialogService
     private static string ProcessCustomErrors(string Content, string Title)
     {
         if (Content.Contains("EasyAntiCheat"))
-            return $"Easy Anti-Cheat needs to be reinstalled. Go to {GlobalSettings.Options.FortnitePath} and delete the EasyAntiCheat folder and Eon_EAC.exe file, then restart the launcher.";
+            return $"Easy Anti-Cheat needs to be reinstalled. Go to {GlobalSettings.Options.FortnitePath} and delete the EasyAntiCheat folder and {ProjectDefinitions.Name}_EAC.exe file, then restart the launcher.";
 
         if (Content.Contains("because it is being used by another process"))
             return "Fortnite is already running. Close it and try again. If the issue persists, restart your computer.";

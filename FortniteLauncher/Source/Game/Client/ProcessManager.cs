@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using static GamePaths;
 
 class Processes
 {
@@ -17,16 +18,17 @@ class Processes
         if (OnErrorCode)
            LaunchStatusService.OnGameClosed();
 
+        Kill(Executables.FortniteLauncher.ProcessName());
+        Kill(Executables.FortniteClient_Win64_Shipping_BE.ProcessName());
+        Kill(Executables.FortniteClient_Win64_Shipping_EAC.ProcessName());
+        Kill(Executables.FortniteClient_Win64_Shipping.ProcessName());
+
+        Kill(ProjectDefinitions.Anticheat);
+        Kill($"{ProjectDefinitions.Name}_EAC");
+
         Kill("FModel");
-
-        Kill("FortniteLauncher");
-        Kill("FortniteClient-Win64-Shipping");
-        Kill("FortniteClient-Win64-Shipping_EAC");
-        Kill("FortniteClient-Win64-Shipping_BE");
-
-        Kill("Eon_EAC");
         Kill("Easy Anti-Cheat Bootstrapper");
-
+        Kill("Easy Anti-Cheat launcher");
         Kill("EpicGamesLauncher");
         Kill("CrashReportClient");
     }

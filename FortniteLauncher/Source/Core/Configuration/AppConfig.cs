@@ -7,5 +7,6 @@
     public bool IsSoundEnabled { get; set; }
     public bool IsBubbleBuildsEnabled { get; set; }
     public bool RedirectProtected { get; set; }
+    public bool AnticheatProtected { get; set; }
     public string SkinUrl { get; set; }
 }

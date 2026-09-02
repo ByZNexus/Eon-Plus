@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
-class Anticheat
+class Mods
 {
     public enum EPlayStatus { Corrupted, Playable }
 

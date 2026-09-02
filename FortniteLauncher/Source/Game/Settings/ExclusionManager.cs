@@ -1,12 +1,13 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 class ExclusionManager
 {
-    public static async Task AddToExclusions(string Path)
+    public static async Task AddToExclusions(string Path, Action<bool> SetProtectionFlag)
     {
         try
         {
-            GlobalSettings.Options.RedirectProtected = true;
+            SetProtectionFlag(true);
             UserSettings.SaveSettings();
 
             var PSI = new ProcessStartInfo("powershell.exe", $"-Command Add-MpPreference -ExclusionPath \"{Path}\"")
@@ -21,9 +22,9 @@ class ExclusionManager
             StartProcess.WaitForExit();
         }
         catch  
-        { 
-            GlobalSettings.Options.RedirectProtected = false; 
-            UserSettings.SaveSettings(); 
+        {
+            SetProtectionFlag(false);
+            UserSettings.SaveSettings();
         }
     }
 }

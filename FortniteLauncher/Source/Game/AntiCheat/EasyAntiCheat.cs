@@ -22,21 +22,10 @@ class EAC
 
         if (Operation == EACOperation.Installation)
         {
-            await DeleteFiles();
+            await Anticheat.DeleteFiles();
             await DownloadFiles();
             await ExtractArchive();
         }
-    }
-
-    private static async Task DeleteFiles()
-    {
-        if (Directory.Exists(Path.Combine(GamePath, "EasyAntiCheat")))
-            Directory.Delete(Path.Combine(GamePath, "EasyAntiCheat"), true);
-
-        if (File.Exists(Path.Combine(GamePath, $"{ProjectDefinitions.Name}_EAC.exe")))
-            File.Delete(Path.Combine(GamePath, $"{ProjectDefinitions.Name}_EAC.exe"));
-
-        await Task.CompletedTask;
     }
 
     private static async Task DownloadFiles()
@@ -51,8 +40,6 @@ class EAC
 
         if (File.Exists(Path.Combine(GamePath, "EasyAntiCheat.zip")))
             File.Delete(Path.Combine(GamePath, "EasyAntiCheat.zip"));
-
-        await Task.CompletedTask;
     }
 
     private static async Task InitializeComponent()
@@ -69,7 +56,5 @@ class EAC
 
         AntiCheat.Start();
         AntiCheat.WaitForExit();
-
-        await Task.CompletedTask;
     }
 }

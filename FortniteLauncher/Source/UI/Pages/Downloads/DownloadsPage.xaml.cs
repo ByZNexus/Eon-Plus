@@ -1,11 +1,10 @@
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.UI.Xaml;
+using System.Diagnostics;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.Storage.Pickers;
-
 
 namespace FortniteLauncher.Pages
 {
@@ -13,12 +12,12 @@ namespace FortniteLauncher.Pages
     {
         private string CurrentPath;
         private string BuildPath;
-        private string DownloadTitle = $"Downloading {ProjectDefinitions.Build} Build";
-        private string Season = $"{ProjectDefinitions.Name} Build ({ProjectDefinitions.Build}-CL-{ProjectDefinitions.ContentLevel})";
-        private string Install = $"Install {ProjectDefinitions.Name}";
-        private string InstallBody = $"Download the {ProjectDefinitions.Build} Fortnite Build, essential for playing {ProjectDefinitions.Name}.";
-        private string UninstallHeader = $"Uninstall {ProjectDefinitions.Name}";
-        private string UninstallBody = $"Delete Chapter {ProjectDefinitions.Chapter} Season {ProjectDefinitions.Season} from your computer. This will not uninstall the {ProjectDefinitions.Name} Launcher.";
+        private string DownloadPageTitle = Text.DownloadPageTitle;
+        private string BuildVersionText = Text.BuildVersionText;
+        private string InstallHeader = Text.InstallHeader;
+        private string InstallBody = Text.InstallBody;
+        private string UninstallHeader = Text.UninstallHeader;
+        private string UninstallBody = Text.UninstallBody;
 
         public DownloadsPage()
         {

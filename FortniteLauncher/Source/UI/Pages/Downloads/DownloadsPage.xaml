@@ -58,7 +58,7 @@
                     FontWeight="SemiBold"/>
         </Grid>
 
-        <TextBlock Text="{x:Bind Season, Mode=TwoWay}"
+        <TextBlock Text="{x:Bind BuildVersionText, Mode=TwoWay}"
                    Grid.Row="2"
                    Margin="2,8,8,4"
                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -66,7 +66,7 @@
                    Style="{ThemeResource BodyStrongTextBlockStyle}"/>
 
         <InfoBar x:Name="DownloadInProgressInfoBar"
-                 Title="{x:Bind DownloadTitle}"
+                 Title="{x:Bind DownloadPageTitle}"
                  Message="Please keep the Launcher open while the download is in progress. Closing it or switching tabs could disrupt the download and create network problems.&#x0a;Note: It's normal for the total download size to adjust during the process."
                  IsClosable="False"
                  Grid.Row="3"
@@ -90,7 +90,7 @@
                       Grid.Column="0"/>
 
             <StackPanel Grid.Column="1" Spacing="2">
-                <TextBlock Text="{x:Bind Install, Mode=TwoWay}"
+                <TextBlock Text="{x:Bind InstallHeader, Mode=TwoWay}"
                            FontWeight="SemiBold"
                            TextTrimming="CharacterEllipsis"
                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>

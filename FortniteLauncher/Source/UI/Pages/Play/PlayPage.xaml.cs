@@ -1,12 +1,12 @@
-using CommunityToolkit.Labs.WinUI;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Animation;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Navigation;
 using System;
+using Microsoft.UI.Xaml;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Controls;
+using CommunityToolkit.Labs.WinUI;
+using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace FortniteLauncher.Pages
 {
@@ -14,28 +14,14 @@ namespace FortniteLauncher.Pages
     {
         public static SettingsCard Launch_Button;
         public static ProgressRing ProgressRing;
-        private string Progress = DownloadService.DownloadProgress;
-        private readonly string DisplayUsername = GetRandomGreeting();
-        private readonly string Description = $"Experience the best Chapter {ProjectDefinitions.Chapter} Season {ProjectDefinitions.Season} experience with {ProjectDefinitions.Name}.";
-        public static readonly string Season = "Launch Fortnite";
-        public static readonly string Chapter = string.Empty;
 
-        private static string GetRandomGreeting()
-        {
-            string Username = GlobalSettings.Options.Username;
-            string[] Greetings = new[]
-            {
-                $"Hello, {Username}!",
-                $"Welcome, {Username}!",
-                $"Hey, {Username}!",
-                $"What's up, {Username}!",
-                $"Greetings, {Username}!",
-                $"Hi, {Username}!",
-                $"Howdy, {Username}!"
-            };
-            var Random = new Random();
-            return Greetings[Random.Next(Greetings.Length)];
-        }
+        private string DownloadInformation = DownloadService.DownloadProgress;
+
+        private readonly string DisplayUsername = Text.DisplayRandomGreeting();
+        private readonly string DisplayDescription = Text.PlayPageDescription;
+
+        private static readonly string LaunchButton_Header = Text.LaunchFortniteText;
+        private static readonly string LaunchButton_Description = string.Empty;
 
         public PlayPage()
         {
@@ -92,7 +78,7 @@ namespace FortniteLauncher.Pages
 
         private void OnDownloadProgressChanged(string DownloadStatus)
         {
-            Progress = DownloadStatus;
+            DownloadInformation = DownloadStatus;
             DispatcherQueue.TryEnqueue(() => DownloadInfo.SetValue(TeachingTip.SubtitleProperty, DownloadStatus));
         }
 

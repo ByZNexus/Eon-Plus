@@ -52,7 +52,7 @@
 
                     <TeachingTip x:Name="DownloadInfo"
                                  Title="Downloading Required Files"
-                                 Subtitle="{x:Bind Progress}"
+                                 Subtitle="{x:Bind DownloadInformation}"
                                  FontWeight="SemiBold">
                         <TeachingTip.IconSource>
                             <SymbolIconSource Symbol="Download"/>
@@ -64,7 +64,7 @@
                                    FontSize="24"
                                    FontWeight="Bold"
                                    Style="{ThemeResource TitleTextBlockStyle}"/>
-                        <TextBlock Text="{x:Bind Description, Mode=OneWay}" 
+                        <TextBlock Text="{x:Bind DisplayDescription, Mode=OneWay}" 
                                    FontSize="16"
                                    FontWeight="SemiBold"
                                    Style="{ThemeResource SubtitleTextBlockStyle}" 
@@ -117,8 +117,8 @@
                                x:FieldModifier="public"
                                Grid.Row="2"
                                Tag="Launch"
-                               Header="{x:Bind local:PlayPage.Season, Mode=OneTime}"
-                               Description="{x:Bind local:PlayPage.Chapter, Mode=OneTime}"
+                               Header="{x:Bind local:PlayPage.LaunchButton_Header, Mode=OneTime}"
+                               Description="{x:Bind local:PlayPage.LaunchButton_Description, Mode=OneTime}"
                                Margin="4,2,4,2"
                                IsClickEnabled="True"
                                IsActionIconVisible="False"

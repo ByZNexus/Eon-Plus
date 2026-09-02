@@ -6,11 +6,10 @@ class LaunchStatusService
 {
     private const string CloseIcon = "\uE8BB";
     private const string LaunchIcon = "\uE768";
-    private const string CloseFortniteText = "Close Fortnite";
 
     public static void OnGameOpened()
     {
-        SetButtonState(CloseFortniteText, CloseIcon, IsGameRunning: true);
+        SetButtonState(Text.CloseFortniteText, CloseIcon, IsGameRunning: true);
     }
 
     public static void OnGameClosed(bool ForceClose = false)
@@ -18,7 +17,7 @@ class LaunchStatusService
         if (ForceClose)
             Processes.ForceCloseFortnite();
 
-        SetButtonState(PlayPage.Season, LaunchIcon, IsGameRunning: false);
+        SetButtonState(Text.LaunchFortniteText, LaunchIcon, IsGameRunning: false);
     }
 
     private static void SetButtonState(string Header, string Icon, bool IsGameRunning)

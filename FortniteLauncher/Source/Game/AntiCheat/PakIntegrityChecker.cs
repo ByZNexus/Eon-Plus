@@ -2,26 +2,31 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 class Mods
 {
     public enum EPlayStatus { Corrupted, Playable }
 
-    public static EPlayStatus CheckForCorruption()
+    private static readonly string[] Extensions = { ".pak", ".sig", ".ucas", ".utoc" };
+
+    public static async Task<EPlayStatus> CheckForCorruption()
     {
         try
         {
             string GamePath = GlobalSettings.Options.FortnitePath;
+            string ContentPath = Path.Combine(GamePath, "FortniteGame", "Content", "Paks");
 
-            var ContentPath = Path.Combine(GamePath, "FortniteGame", "Content", "Paks");
             if (!Directory.Exists(ContentPath))
             {
                 DialogService.ShowSimpleDialog(string.Empty, "Corrupted Data Detected");
                 return EPlayStatus.Corrupted;
             }
 
-            var MissingFiles = GetAllowedContentFiles().Where(File => !Directory.GetFiles(ContentPath).Select(Path.GetFileName).ToHashSet(StringComparer.OrdinalIgnoreCase).Contains(File)).ToList();
-            if (MissingFiles.Any())
+            if (!await CheckForUnexpectedFiles(ContentPath))
+                return EPlayStatus.Corrupted;
+
+            if (!CheckForMissingFiles(ContentPath))
             {
                 DialogService.ShowSimpleDialog(string.Empty, "Corrupted Data Detected");
                 return EPlayStatus.Corrupted;
@@ -36,10 +41,45 @@ class Mods
         }
     }
 
+    private static async Task<bool> CheckForUnexpectedFiles(string ContentPath)
+    {
+        var AllowedFiles = GetAllowedContentFiles();
+        var ActualFiles = Directory.GetFiles(ContentPath).Select(Path.GetFileName).Where(File => Extensions.Contains(Path.GetExtension(File), StringComparer.OrdinalIgnoreCase)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var UnexpectedFiles = ActualFiles.Where(File => !AllowedFiles.Contains(File)).ToList();
+
+        if (!UnexpectedFiles.Any())
+            return true;
+
+        string FileList = string.Join("\n", UnexpectedFiles);
+        bool ShouldRemove = await DialogService.YesOrNoDialog($"We found some files in your Fortnite installation that shouldn't be there:\n\n{FileList}\n\nWould you like us to remove them?", "Unrecognized Files Found");
+
+        if (!ShouldRemove)
+            return false;
+
+        foreach (var FileName in UnexpectedFiles)
+        {
+            string FullPath = Path.Combine(ContentPath, FileName);
+            if (File.Exists(FullPath))
+                File.Delete(FullPath);
+        }
+
+        return true;
+    }
+
+    private static bool CheckForMissingFiles(string ContentPath)
+    {
+        var AllowedFiles = GetAllowedContentFiles();
+        var ActualFiles = Directory.GetFiles(ContentPath).Select(Path.GetFileName).Where(File => Extensions.Contains(Path.GetExtension(File), StringComparer.OrdinalIgnoreCase)).ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var MissingFiles = AllowedFiles.Where(File => !ActualFiles.Contains(File)).ToList();
+
+        return !MissingFiles.Any();
+    }
+
     private static HashSet<string> GetAllowedContentFiles()
     {
         var ContentFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var Extensions = new[] { ".pak", ".sig", ".ucas", ".utoc" };
 
         ContentFiles.Add("global.ucas");
         ContentFiles.Add("global.utoc");

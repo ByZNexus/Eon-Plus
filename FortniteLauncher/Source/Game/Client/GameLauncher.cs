@@ -9,7 +9,8 @@ class Fortnite
         try
         {
             await RequiredFilesDownloader.Download();
-            if (Mods.CheckForCorruption() != Mods.EPlayStatus.Playable)
+
+            if (await Mods.CheckForCorruption() != Mods.EPlayStatus.Playable)
                 return;
 
             await EAC.Execute(EACOperation.Initialize);
